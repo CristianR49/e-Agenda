@@ -18,6 +18,7 @@ namespace e_Agenda.ModuloTarefas
             tarefa.id = contador;
             tarefa.dataCriacao = DateTime.Now;
             tarefa.percentualConcluido = 0;
+            tarefa.items = new List<Item>();
             tarefas.Add(tarefa);
         }
 

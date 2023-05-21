@@ -1,13 +1,14 @@
 ﻿using e_Agenda.Compartilhado;
 using e_Agenda.ModuloTarefas;
 using e_Agenda.ModuloTarefas;
+using static e_Agenda.ModuloTarefas.Item;
 
 namespace e_Agenda.WinApp.ModuloTarefa
 {
     public class ControladorTarefa : ControladorBase
     {
         private ListaTarefaControl listaTarefa;
-        private RepositorioTarefa repositorioTarefa;
+        public RepositorioTarefa repositorioTarefa;
 
         public ControladorTarefa(RepositorioTarefa repositorioTarefa)
         {
@@ -40,7 +41,7 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
         public override void Editar()
         {
-            Tarefa tarefa = listaTarefa.ObterTarefaSelecionado();
+            Tarefa tarefa = listaTarefa.ObterTarefaSelecionada();
 
             if (tarefa == null)
             {
@@ -67,7 +68,7 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
         public override void Excluir()
         {
-            Tarefa tarefa = listaTarefa.ObterTarefaSelecionado();
+            Tarefa tarefa = listaTarefa.ObterTarefaSelecionada();
 
             if (tarefa == null)
             {
@@ -110,6 +111,86 @@ namespace e_Agenda.WinApp.ModuloTarefa
         public override string ObterTipoRegistro()
         {
             return "Cadastro de Tarefas";
+        }
+
+        internal void InserirItems()
+        {
+
+            Tarefa tarefa = listaTarefa.ObterTarefaSelecionada();
+
+            if (tarefa == null)
+            {
+                MessageBox.Show($"Selecione uma tarefa primeiro!",
+                    "Adicionar Items",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+
+                return;
+            }
+
+            TelaItemAddForm telaItem = new TelaItemAddForm();
+
+            telaItem.TarefaAReceberItems = tarefa;
+
+            DialogResult opcaoEscolhida = telaItem.ShowDialog();
+
+            if (opcaoEscolhida == DialogResult.OK)
+            {
+                int contador = 0;
+                foreach (string s in telaItem.DescricaoItems)
+                {
+                    string descricao = telaItem.DescricaoItems[contador];
+
+                    Conclusao conclusao = Conclusao.Pendente;
+
+                    Item item = new Item(descricao, conclusao);
+
+                    tarefa.items.Add(item);
+
+                    contador++;
+                }
+            }
+        }
+
+        internal void MostrarItemsConcluidos()
+        {
+            Tarefa tarefa = listaTarefa.ObterTarefaSelecionada();
+
+            if (tarefa == null)
+            {
+                MessageBox.Show($"Selecione uma tarefa primeiro!",
+                    "Adicionar Items",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+
+                return;
+            }
+
+            TelaItemsConcluidosForm telaItem = new TelaItemsConcluidosForm();
+
+            telaItem.TarefaVerificada = tarefa;
+
+            DialogResult opcaoEscolhida = telaItem.ShowDialog();
+
+            if (opcaoEscolhida == DialogResult.OK)
+            {
+                decimal percentualDeCadaItem = 100m / tarefa.items.Count();
+
+                decimal percentualConcluido = 0m;
+
+                foreach(Item i in tarefa.items)
+                {
+                    if (i.conclusao == Conclusao.Concluido)
+                        percentualConcluido += percentualDeCadaItem;
+                }
+
+                tarefa.percentualConcluido = percentualConcluido;
+
+                if (percentualConcluido > 99)
+                    tarefa.dataConclusao = DateTime.Now;
+
+                    CarregarTarefas();
+            }
         }
     }
 }

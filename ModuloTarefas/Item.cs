@@ -6,11 +6,18 @@ using System.Threading.Tasks;
 
 namespace e_Agenda.ModuloTarefas
 {
-    internal class Item
+    public class Item
     {
-        string descricao;
-        Conclusao conclusao;
-        enum Conclusao
+        public string descricao;
+        public Conclusao conclusao;
+
+        public Item(string descricao, Conclusao conclusao)
+        {
+            this.descricao = descricao;
+            this.conclusao = conclusao;
+        }
+
+        public enum Conclusao
         {
             Pendente, Concluido
         }

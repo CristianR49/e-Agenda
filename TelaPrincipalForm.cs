@@ -24,6 +24,9 @@ namespace e_Agenda
             repositorioCompromisso.PopularRegistrosAutomaticamente();
 
             toolStrip1.Enabled = false;
+
+            btnAddItems.Available = false;
+            btnItemsConcluidos.Available = false;
         }
 
         private void contatosMenuItem_Click(object sender, EventArgs e)
@@ -33,6 +36,8 @@ namespace e_Agenda
             ConfigurarTelaPrincipal(controlador);
 
             toolStrip1.Enabled = true;
+
+            DesativarBotoesTarefa();
         }
 
         private void compromissosMenuItem_Click(object sender, EventArgs e)
@@ -44,8 +49,8 @@ namespace e_Agenda
 
             toolStrip1.Enabled = true;
 
-            //editar
-            VisualizarQuantidadeRegistros();
+            DesativarBotoesTarefa();
+            //visuqnt
         }
 
         private void tarefasMenuItem_Click(object sender, EventArgs e)
@@ -55,6 +60,10 @@ namespace e_Agenda
             ConfigurarTelaPrincipal(controlador);
 
             toolStrip1.Enabled = true;
+
+            btnAddItems.Available = true;
+
+            btnItemsConcluidos.Available = true;
         }
 
         private void ConfigurarTelaPrincipal(ControladorBase controladorBase)
@@ -92,7 +101,7 @@ namespace e_Agenda
 
             controlador.Inserir();
 
-            VisualizarQuantidadeRegistros();
+            //visuqnt
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
@@ -103,7 +112,7 @@ namespace e_Agenda
 
             controlador.Editar();
 
-            VisualizarQuantidadeRegistros();
+            //visuqnt
         }
 
         private void btnExcluir_Click(object sender, EventArgs e)
@@ -112,7 +121,7 @@ namespace e_Agenda
 
             controlador.Excluir();
 
-            VisualizarQuantidadeRegistros();
+            //visuqnt
         }
 
         private void VisualizarQuantidadeRegistros()
@@ -137,17 +146,32 @@ namespace e_Agenda
 
             controladorCompromisso.Filtrar();
 
-            VisualizarQuantidadeRegistros();
+            //visuqnt
         }
 
-        private void inserirItemsEmUmaTarefaMenuItem_Click(object sender, EventArgs e)
+        private void bntAddItems_Click(object sender, EventArgs e)
         {
-            controlador = new ControladorTarefa(repositorioTarefa);
 
             ControladorTarefa controladorTarefa = (ControladorTarefa)controlador;
 
-            controladorTarefa.
+            controladorTarefa.repositorioTarefa = repositorioTarefa;
 
+            controladorTarefa.InserirItems();
+        }
+
+        private void DesativarBotoesTarefa()
+        {
+            btnAddItems.Available = false;
+            btnItemsConcluidos.Available = false;
+        }
+
+        private void btnItemsConcluidos_Click(object sender, EventArgs e)
+        {
+            ControladorTarefa controladorTarefa = (ControladorTarefa)controlador;
+
+            controladorTarefa.repositorioTarefa = repositorioTarefa;
+
+            controladorTarefa.MostrarItemsConcluidos();
         }
     }
 }

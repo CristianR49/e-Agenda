@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TelaPrincipalForm));
             menuStrip1 = new MenuStrip();
             registrosMenuItem = new ToolStripMenuItem();
             contatosMenuItem = new ToolStripMenuItem();
@@ -38,12 +39,13 @@
             btnInserir = new ToolStripButton();
             btnEditar = new ToolStripButton();
             btnExcluir = new ToolStripButton();
+            btnAddItems = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
+            btnItemsConcluidos = new ToolStripButton();
             LabelTipoCadastro = new ToolStripLabel();
             statusStrip1 = new StatusStrip();
             StatusLabel = new ToolStripStatusLabel();
             panelRegistros = new Panel();
-            inserirItemsEmUmaTarefaMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             toolStrip1.SuspendLayout();
             statusStrip1.SuspendLayout();
@@ -55,8 +57,7 @@
             menuStrip1.Items.AddRange(new ToolStripItem[] { registrosMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
-            menuStrip1.Padding = new Padding(4, 1, 0, 1);
-            menuStrip1.Size = new Size(560, 24);
+            menuStrip1.Size = new Size(800, 33);
             menuStrip1.TabIndex = 0;
             menuStrip1.Text = "menuStrip1";
             // 
@@ -64,13 +65,13 @@
             // 
             registrosMenuItem.DropDownItems.AddRange(new ToolStripItem[] { contatosMenuItem, compromissosMenuItem, tarefasMenuItem });
             registrosMenuItem.Name = "registrosMenuItem";
-            registrosMenuItem.Size = new Size(67, 22);
+            registrosMenuItem.Size = new Size(101, 29);
             registrosMenuItem.Text = "Registros";
             // 
             // contatosMenuItem
             // 
             contatosMenuItem.Name = "contatosMenuItem";
-            contatosMenuItem.Size = new Size(180, 22);
+            contatosMenuItem.Size = new Size(235, 34);
             contatosMenuItem.Text = "Contatos";
             contatosMenuItem.Click += contatosMenuItem_Click;
             // 
@@ -78,32 +79,32 @@
             // 
             compromissosMenuItem.DropDownItems.AddRange(new ToolStripItem[] { FiltrarMenuItem });
             compromissosMenuItem.Name = "compromissosMenuItem";
-            compromissosMenuItem.Size = new Size(180, 22);
+            compromissosMenuItem.Size = new Size(235, 34);
             compromissosMenuItem.Text = "Compromissos";
             compromissosMenuItem.Click += compromissosMenuItem_Click;
             // 
             // FiltrarMenuItem
             // 
             FiltrarMenuItem.Name = "FiltrarMenuItem";
-            FiltrarMenuItem.Size = new Size(104, 22);
+            FiltrarMenuItem.Size = new Size(158, 34);
             FiltrarMenuItem.Text = "Filtrar";
             FiltrarMenuItem.Click += FiltrarMenuItem_Click;
             // 
             // tarefasMenuItem
             // 
-            tarefasMenuItem.DropDownItems.AddRange(new ToolStripItem[] { inserirItemsEmUmaTarefaMenuItem });
             tarefasMenuItem.Name = "tarefasMenuItem";
-            tarefasMenuItem.Size = new Size(180, 22);
+            tarefasMenuItem.Size = new Size(235, 34);
             tarefasMenuItem.Text = "Tarefas";
             tarefasMenuItem.Click += tarefasMenuItem_Click;
             // 
             // toolStrip1
             // 
             toolStrip1.ImageScalingSize = new Size(24, 24);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btnInserir, btnEditar, btnExcluir, toolStripSeparator1, LabelTipoCadastro });
-            toolStrip1.Location = new Point(0, 24);
+            toolStrip1.Items.AddRange(new ToolStripItem[] { btnInserir, btnEditar, btnExcluir, btnAddItems, toolStripSeparator1, btnItemsConcluidos, LabelTipoCadastro });
+            toolStrip1.Location = new Point(0, 33);
             toolStrip1.Name = "toolStrip1";
-            toolStrip1.Size = new Size(560, 45);
+            toolStrip1.Padding = new Padding(0, 0, 3, 0);
+            toolStrip1.Size = new Size(800, 47);
             toolStrip1.TabIndex = 1;
             toolStrip1.Text = "toolStrip1";
             // 
@@ -143,62 +144,72 @@
             btnExcluir.Text = "Excluir";
             btnExcluir.Click += btnExcluir_Click;
             // 
+            // btnAddItems
+            // 
+            btnAddItems.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnAddItems.Image = (Image)resources.GetObject("btnAddItems.Image");
+            btnAddItems.ImageTransparentColor = Color.Magenta;
+            btnAddItems.Name = "btnAddItems";
+            btnAddItems.Size = new Size(34, 42);
+            btnAddItems.Text = "Adicionar Items a uma Tarefa";
+            btnAddItems.Click += bntAddItems_Click;
+            // 
             // toolStripSeparator1
             // 
             toolStripSeparator1.Name = "toolStripSeparator1";
-            toolStripSeparator1.Size = new Size(6, 45);
+            toolStripSeparator1.Size = new Size(6, 47);
+            // 
+            // btnItemsConcluidos
+            // 
+            btnItemsConcluidos.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnItemsConcluidos.Image = (Image)resources.GetObject("btnItemsConcluidos.Image");
+            btnItemsConcluidos.ImageTransparentColor = Color.Magenta;
+            btnItemsConcluidos.Name = "btnItemsConcluidos";
+            btnItemsConcluidos.Size = new Size(34, 42);
+            btnItemsConcluidos.Text = "Mostrar Items concluidos";
+            btnItemsConcluidos.Click += btnItemsConcluidos_Click;
             // 
             // LabelTipoCadastro
             // 
             LabelTipoCadastro.Name = "LabelTipoCadastro";
-            LabelTipoCadastro.Size = new Size(75, 42);
+            LabelTipoCadastro.Size = new Size(115, 42);
             LabelTipoCadastro.Text = "tipoCadastro";
             // 
             // statusStrip1
             // 
             statusStrip1.ImageScalingSize = new Size(24, 24);
             statusStrip1.Items.AddRange(new ToolStripItem[] { StatusLabel });
-            statusStrip1.Location = new Point(0, 248);
+            statusStrip1.Location = new Point(0, 418);
             statusStrip1.Name = "statusStrip1";
-            statusStrip1.Padding = new Padding(1, 0, 10, 0);
-            statusStrip1.Size = new Size(560, 22);
+            statusStrip1.Size = new Size(800, 32);
             statusStrip1.TabIndex = 2;
             statusStrip1.Text = "statusStrip1";
             // 
             // StatusLabel
             // 
             StatusLabel.Name = "StatusLabel";
-            StatusLabel.Size = new Size(54, 17);
+            StatusLabel.Size = new Size(83, 25);
             StatusLabel.Text = "Cadastro";
             // 
             // panelRegistros
             // 
             panelRegistros.BorderStyle = BorderStyle.FixedSingle;
             panelRegistros.Dock = DockStyle.Fill;
-            panelRegistros.Location = new Point(0, 69);
-            panelRegistros.Margin = new Padding(2);
+            panelRegistros.Location = new Point(0, 80);
             panelRegistros.Name = "panelRegistros";
-            panelRegistros.Size = new Size(560, 179);
+            panelRegistros.Size = new Size(800, 338);
             panelRegistros.TabIndex = 3;
-            // 
-            // inserirItemsEmUmaTarefaMenuItem
-            // 
-            inserirItemsEmUmaTarefaMenuItem.Name = "inserirItemsEmUmaTarefaMenuItem";
-            inserirItemsEmUmaTarefaMenuItem.Size = new Size(219, 22);
-            inserirItemsEmUmaTarefaMenuItem.Text = "Inserir Items em uma Tarefa";
-            inserirItemsEmUmaTarefaMenuItem.Click += inserirItemsEmUmaTarefaMenuItem_Click;
             // 
             // TelaPrincipalForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(10F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(560, 270);
+            ClientSize = new Size(800, 450);
             Controls.Add(panelRegistros);
             Controls.Add(statusStrip1);
             Controls.Add(toolStrip1);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
-            Margin = new Padding(2);
             Name = "TelaPrincipalForm";
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
@@ -230,6 +241,7 @@
         private ToolStripLabel LabelTipoCadastro;
         private ToolStripMenuItem FiltrarMenuItem;
         private ToolStripMenuItem tarefasMenuItem;
-        private ToolStripMenuItem inserirItemsEmUmaTarefaMenuItem;
+        private ToolStripButton btnAddItems;
+        private ToolStripButton btnItemsConcluidos;
     }
 }

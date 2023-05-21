@@ -37,7 +37,7 @@ namespace e_Agenda.ModuloTarefas
         {
             string titulo = txtTitulo.Text;
 
-            object prioridade = boxPrioridade.SelectedItem;
+            Tarefa.Prioridade prioridade = (Tarefa.Prioridade)boxPrioridade.SelectedItem;
 
             tarefa = new Tarefa(titulo, prioridade);
 
@@ -49,16 +49,9 @@ namespace e_Agenda.ModuloTarefas
         {
             boxPrioridade.Items.Clear();
 
-            boxPrioridade.Items.Add(Prioridade.Alta);
-            boxPrioridade.Items.Add(Prioridade.Normal);
-            boxPrioridade.Items.Add(Prioridade.Baixa);
-        }
-
-        public enum Prioridade
-        {
-            Baixa,
-            Normal,
-            Alta
+            boxPrioridade.Items.Add(Tarefa.Prioridade.Alta);
+            boxPrioridade.Items.Add(Tarefa.Prioridade.Media);
+            boxPrioridade.Items.Add(Tarefa.Prioridade.Baixa);
         }
     }
 }
