@@ -24,13 +24,59 @@ namespace e_Agenda.ModuloTarefas
 
             listTarefa.Items.Add("Tarefas Pendentes:");
 
+            listTarefa.Items.Add("");
+
             listTarefa.Items.Add("Prioridade Alta:");
 
             foreach (Tarefa item in tarefas)
             {
-                if(item.percentualConcluido < 99 && item.prioridade == Tarefa.Prioridade.Alta)
+                if(item.prioridade == Tarefa.Prioridade.Alta)
                 listTarefa.Items.Add(item);
             }
+
+            listTarefa.Items.Add("");
+
+            listTarefa.Items.Add("Prioridade Média:");
+
+            foreach (Tarefa item in tarefas)
+            {
+                if (item.prioridade == Tarefa.Prioridade.Media)
+                    listTarefa.Items.Add(item);
+            }
+
+            listTarefa.Items.Add("");
+
+            listTarefa.Items.Add("Prioridade Baixa:");
+
+            foreach (Tarefa item in tarefas)
+            {
+                if (item.prioridade == Tarefa.Prioridade.Baixa)
+                    listTarefa.Items.Add(item);
+            }
+        }
+
+        public Tarefa ObterTarefaSelecionada()
+        {
+            return (Tarefa)listTarefa.SelectedItem;
+        }
+
+        public void MostrarTarefasPendentes(List<Tarefa> tarefas)
+        {
+            listTarefa.Items.Clear();
+
+            listTarefa.Items.Add("Tarefas Pendentes:");
+
+            listTarefa.Items.Add("");
+
+            listTarefa.Items.Add("Prioridade Alta:");
+
+            foreach (Tarefa item in tarefas)
+            {
+                if (item.percentualConcluido < 99 && item.prioridade == Tarefa.Prioridade.Alta)
+                    listTarefa.Items.Add(item);
+            }
+
+            listTarefa.Items.Add("");
 
             listTarefa.Items.Add("Prioridade Média:");
 
@@ -40,6 +86,8 @@ namespace e_Agenda.ModuloTarefas
                     listTarefa.Items.Add(item);
             }
 
+            listTarefa.Items.Add("");
+
             listTarefa.Items.Add("Prioridade Baixa:");
 
             foreach (Tarefa item in tarefas)
@@ -47,8 +95,15 @@ namespace e_Agenda.ModuloTarefas
                 if (item.percentualConcluido < 99 && item.prioridade == Tarefa.Prioridade.Baixa)
                     listTarefa.Items.Add(item);
             }
+        }
 
-            listTarefa.Items.Add("Tarefas Concluidas:");
+        public void MostrarTarefasConcluidas(List<Tarefa> tarefas)
+        {
+            listTarefa.Items.Clear();
+
+            listTarefa.Items.Add("Tarefas Concluídas:");
+
+            listTarefa.Items.Add("");
 
             listTarefa.Items.Add("Prioridade Alta:");
 
@@ -58,6 +113,8 @@ namespace e_Agenda.ModuloTarefas
                     listTarefa.Items.Add(item);
             }
 
+            listTarefa.Items.Add("");
+
             listTarefa.Items.Add("Prioridade Média:");
 
             foreach (Tarefa item in tarefas)
@@ -66,6 +123,8 @@ namespace e_Agenda.ModuloTarefas
                     listTarefa.Items.Add(item);
             }
 
+            listTarefa.Items.Add("");
+
             listTarefa.Items.Add("Prioridade Baixa:");
 
             foreach (Tarefa item in tarefas)
@@ -73,11 +132,6 @@ namespace e_Agenda.ModuloTarefas
                 if (item.percentualConcluido > 99 && item.prioridade == Tarefa.Prioridade.Baixa)
                     listTarefa.Items.Add(item);
             }
-        }
-
-        public Tarefa ObterTarefaSelecionada()
-        {
-            return (Tarefa)listTarefa.SelectedItem;
         }
     }
 }

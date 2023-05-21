@@ -27,6 +27,8 @@ namespace e_Agenda
 
             btnAddItems.Available = false;
             btnItemsConcluidos.Available = false;
+
+            btnFiltrar.Available = false;
         }
 
         private void contatosMenuItem_Click(object sender, EventArgs e)
@@ -37,7 +39,11 @@ namespace e_Agenda
 
             toolStrip1.Enabled = true;
 
+            btnFiltrar.Available = false;
+
             DesativarBotoesTarefa();
+
+            VisualizandoRegistros();
         }
 
         private void compromissosMenuItem_Click(object sender, EventArgs e)
@@ -49,8 +55,10 @@ namespace e_Agenda
 
             toolStrip1.Enabled = true;
 
+            btnFiltrar.Available = true;
+
             DesativarBotoesTarefa();
-            //visuqnt
+            VisualizandoRegistros();
         }
 
         private void tarefasMenuItem_Click(object sender, EventArgs e)
@@ -61,9 +69,13 @@ namespace e_Agenda
 
             toolStrip1.Enabled = true;
 
+            btnFiltrar.Available = true;
+
             btnAddItems.Available = true;
 
             btnItemsConcluidos.Available = true;
+
+            VisualizandoRegistros();
         }
 
         private void ConfigurarTelaPrincipal(ControladorBase controladorBase)
@@ -101,7 +113,7 @@ namespace e_Agenda
 
             controlador.Inserir();
 
-            //visuqnt
+            VisualizandoRegistros();
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
@@ -112,7 +124,7 @@ namespace e_Agenda
 
             controlador.Editar();
 
-            //visuqnt
+            VisualizandoRegistros();
         }
 
         private void btnExcluir_Click(object sender, EventArgs e)
@@ -121,32 +133,16 @@ namespace e_Agenda
 
             controlador.Excluir();
 
-            //visuqnt
+            VisualizandoRegistros();
         }
 
-        private void VisualizarQuantidadeRegistros()
-        {
-            List<Compromisso> compromissos = repositorioCompromisso.SelecionarTodos();
-
-            StatusLabel.Text = $"Visualizando {compromissos.Count} Compromissos(s)";
-        }
-
-
-        private void FiltrarMenuItem_Click(object sender, EventArgs e)
+        private void btnFiltrar_Click(object sender, EventArgs e)
         {
             StatusLabel.Text = $"Filtrando visualização de {controlador.NomeEntidade}";
 
-            toolStrip1.Enabled = true;
+            controlador.Filtrar();
 
-            controlador = new ControladorCompromisso(repositorioCompromisso);
-
-            ConfigurarTelaPrincipal(controlador);
-
-            ControladorCompromisso controladorCompromisso = (ControladorCompromisso)controlador;
-
-            controladorCompromisso.Filtrar();
-
-            //visuqnt
+            VisualizandoRegistros();
         }
 
         private void bntAddItems_Click(object sender, EventArgs e)
@@ -157,6 +153,8 @@ namespace e_Agenda
             controladorTarefa.repositorioTarefa = repositorioTarefa;
 
             controladorTarefa.InserirItems();
+
+            VisualizandoRegistros();
         }
 
         private void DesativarBotoesTarefa()
@@ -167,11 +165,22 @@ namespace e_Agenda
 
         private void btnItemsConcluidos_Click(object sender, EventArgs e)
         {
+            StatusLabel.Text = $"Marcando Items concluído(s)";
+
             ControladorTarefa controladorTarefa = (ControladorTarefa)controlador;
 
             controladorTarefa.repositorioTarefa = repositorioTarefa;
 
             controladorTarefa.MostrarItemsConcluidos();
+
+            VisualizandoRegistros();
+        }
+
+        private void VisualizandoRegistros()
+        {
+            List<Compromisso> compromissos = repositorioCompromisso.SelecionarTodos();
+
+            StatusLabel.Text = $"Visualizando Registro(s)";
         }
     }
 }

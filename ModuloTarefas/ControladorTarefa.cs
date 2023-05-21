@@ -90,6 +90,50 @@ namespace e_Agenda.WinApp.ModuloTarefa
                 CarregarTarefas();
             }
         }
+        public override void Filtrar()
+        {
+            TelaFiltrarTarefaForm telaFiltro = new TelaFiltrarTarefaForm();
+
+            DialogResult opcaoEscolhida = telaFiltro.ShowDialog();
+
+            if (opcaoEscolhida == DialogResult.OK)
+            {
+                if(telaFiltro.TodasAsTarefasCheck)
+                {
+                    CarregarTarefas();
+
+                    telaFiltro.TodasAsTarefasCheck = false;
+                }
+                
+                if(telaFiltro.TarefasPendentesCheck)
+                {
+                    VisualizarTarefasPendentes();
+
+                    telaFiltro.TarefasPendentesCheck = false;
+                }
+
+                if(telaFiltro.TarefasConcluidasCheck)
+                {
+                    VisualizarTarefasConcluidas();
+
+                    telaFiltro.TarefasConcluidasCheck = false;
+                }
+            }
+        }
+
+        private void VisualizarTarefasPendentes()
+        {
+            List<Tarefa> tarefas = repositorioTarefa.SelecionarTodos();
+
+            listaTarefa.MostrarTarefasPendentes(tarefas);
+        }
+
+        private void VisualizarTarefasConcluidas()
+        {
+            List<Tarefa> tarefas = repositorioTarefa.SelecionarTodos();
+
+            listaTarefa.MostrarTarefasConcluidas(tarefas);
+        }
 
         private void CarregarTarefas()
         {
@@ -178,7 +222,7 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
                 decimal percentualConcluido = 0m;
 
-                foreach(Item i in tarefa.items)
+                foreach (Item i in tarefa.items)
                 {
                     if (i.conclusao == Conclusao.Concluido)
                         percentualConcluido += percentualDeCadaItem;
@@ -189,7 +233,7 @@ namespace e_Agenda.WinApp.ModuloTarefa
                 if (percentualConcluido > 99)
                     tarefa.dataConclusao = DateTime.Now;
 
-                    CarregarTarefas();
+                CarregarTarefas();
             }
         }
     }

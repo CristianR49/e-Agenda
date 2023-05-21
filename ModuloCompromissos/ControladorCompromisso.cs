@@ -82,6 +82,16 @@ namespace e_Agenda.ModuloCompromissos
 
             Compromisso compromisso = listaCompromissoControl.ObterCompromissoSelecionado();
 
+            if (compromisso == null)
+            {
+                MessageBox.Show($"Selecione um Compromisso primeiro!",
+                    "Exclusão de Compromissos",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+
+                return;
+            }
+
             DialogResult opcaoEscolhida = MessageBox.Show($"Deseja excluir o Compromisso {compromisso.assunto}?", "Exclusão de compromisso", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
 
             if (opcaoEscolhida == DialogResult.OK)
@@ -116,7 +126,7 @@ namespace e_Agenda.ModuloCompromissos
             return "Cadastro de Compromissos";
         }
 
-        public void Filtrar()
+        public override void Filtrar()
         {
             DialogResult opcaoEscolhida = telaFiltro.ShowDialog();
 
@@ -126,16 +136,20 @@ namespace e_Agenda.ModuloCompromissos
                 if (telaFiltro.TodosOsCompromissosCheck == true)
                 {
                     CarregarCompromissos();
+
                     telaFiltro.TodosOsCompromissosCheck = false;
                 }
                 if (telaFiltro.CompromissosPassadosCheck == true)
                 {
                     VisualizarCompromissosPassados();
+
                     telaFiltro.CompromissosPassadosCheck = false;
                 }
                 if (telaFiltro.CompromissosFuturosCheck == true)
                 {
                     VisualizarCompromissosFuturos(telaFiltro.DataInicio, telaFiltro.DataFim);
+
+                    telaFiltro.CompromissosFuturosCheck = false;
                 }
 
             }

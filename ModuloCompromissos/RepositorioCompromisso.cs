@@ -69,7 +69,7 @@ namespace e_Agenda.ModuloCompromissos
 
             assunto = "Fazer compras do mês";
             local = "Mercado";
-            data = DateOnly.Parse("19/05/2023");
+            data = DateOnly.Parse("30/05/2023");
             hInicio = TimeOnly.Parse("18:00:00");
             hTermino = TimeOnly.Parse("19:00:00");
 

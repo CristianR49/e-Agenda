@@ -21,6 +21,7 @@ namespace e_Agenda.Compartilhado
 
         public abstract void Editar();
 
+        public abstract void Filtrar();
         public abstract UserControl ObterLista();
 
         public abstract string ObterTipoRegistro();
