@@ -70,7 +70,6 @@
             btnGravar.TabIndex = 14;
             btnGravar.Text = "Gravar";
             btnGravar.UseVisualStyleBackColor = true;
-            btnGravar.Click += btnGravar_Click;
             // 
             // btnCancelar
             // 
@@ -98,7 +97,6 @@
             ShowIcon = false;
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Items Concluidos";
-            Load += TelaItemsConcluidosForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

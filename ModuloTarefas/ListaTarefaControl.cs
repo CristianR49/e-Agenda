@@ -22,10 +22,6 @@ namespace e_Agenda.ModuloTarefas
         {
             listTarefa.Items.Clear();
 
-            listTarefa.Items.Add("Tarefas Pendentes:");
-
-            listTarefa.Items.Add("");
-
             listTarefa.Items.Add("Prioridade Alta:");
 
             foreach (Tarefa item in tarefas)

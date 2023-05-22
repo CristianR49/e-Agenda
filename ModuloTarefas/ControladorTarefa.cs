@@ -214,26 +214,64 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
             telaItem.TarefaVerificada = tarefa;
 
+            int contador = 0;
+            foreach (Item i in tarefa.items)
+            {
+                telaItem.AdicionarEmCheckedListItems(i.descricao);
+
+                if (i.conclusao == Item.Conclusao.Concluido)
+                    telaItem.CheckedListItemsSetItemChecked(contador, true);
+                else
+                    telaItem.CheckedListItemsSetItemChecked(contador, false);
+
+                contador++;
+            }
+
+            
+
             DialogResult opcaoEscolhida = telaItem.ShowDialog();
 
             if (opcaoEscolhida == DialogResult.OK)
             {
-                decimal percentualDeCadaItem = 100m / tarefa.items.Count();
+                MarcarConcluidoNosItemsChecados(tarefa, telaItem);
 
-                decimal percentualConcluido = 0m;
-
-                foreach (Item i in tarefa.items)
-                {
-                    if (i.conclusao == Conclusao.Concluido)
-                        percentualConcluido += percentualDeCadaItem;
-                }
-
-                tarefa.percentualConcluido = percentualConcluido;
-
-                if (percentualConcluido > 99)
-                    tarefa.dataConclusao = DateTime.Now;
+                DefinirPercentagemDeConclusãoNaTarefa(tarefa);
 
                 CarregarTarefas();
+            }
+        }
+
+        private static void DefinirPercentagemDeConclusãoNaTarefa(Tarefa tarefa)
+        {
+            decimal percentualDeCadaItem = 100m / tarefa.items.Count();
+
+            decimal percentualConcluido = 0m;
+
+            foreach (Item i in tarefa.items)
+            {
+                if (i.conclusao == Conclusao.Concluido)
+                    percentualConcluido += percentualDeCadaItem;
+            }
+
+            tarefa.percentualConcluido = percentualConcluido;
+
+            if (percentualConcluido > 99)
+                tarefa.dataConclusao = DateTime.Now;
+        }
+
+        private static void MarcarConcluidoNosItemsChecados(Tarefa tarefa, TelaItemsConcluidosForm telaItem)
+        {
+            int quantidadeDeItensNaCheckedList = telaItem.RetornarCheckedListItemsQuantidadeDeItems();
+
+            for (int i = 0; i < quantidadeDeItensNaCheckedList; i++)
+            {
+                bool itemChecado = telaItem.RetornarCheckedListItemsGetItemChecked(i);
+
+                if (itemChecado == true)
+                    tarefa.items[i].conclusao = Item.Conclusao.Concluido;
+
+                if (itemChecado == false)
+                    tarefa.items[i].conclusao = Item.Conclusao.Pendente;
             }
         }
     }

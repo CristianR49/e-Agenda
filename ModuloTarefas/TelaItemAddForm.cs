@@ -17,14 +17,9 @@ namespace e_Agenda.ModuloTarefas
 
         private List<string> descricaoItems = new List<string>();
 
-        //private string textoItem;
-
-
         public Tarefa TarefaAReceberItems { get { return tarefaAReceberItems; } set { lblTarefa.Text = value.titulo; } }
 
         public List<String> DescricaoItems { get { return descricaoItems; } }
-
-        //public string TextoItem { get { return textoItem; } }
 
         public TelaItemAddForm()
         {
