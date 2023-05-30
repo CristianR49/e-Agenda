@@ -1,9 +1,11 @@
-﻿using System;
+﻿using e_Agenda.Compartilhado;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,6 +24,8 @@ namespace e_Agenda.ModuloTarefas
         public TelaFiltrarTarefaForm()
         {
             InitializeComponent();
+
+            this.ConfigurarDialog();
         }
 
         private void btnTodasAsTarefas_CheckedChanged(object sender, EventArgs e)
@@ -32,6 +36,17 @@ namespace e_Agenda.ModuloTarefas
         private void btnTarefasPendentes_CheckedChanged(object sender, EventArgs e)
         {
             tarefasPendentesCheck = btnTarefasPendentes.Checked;
+        }
+
+        public StatusTarefaEnum ObterFiltroTarefa()
+        {
+            if (btnTarefasPendentes.Checked == true)
+                return StatusTarefaEnum.Pendentes;
+
+            if (btnTarefasConcluidas.Checked == true)
+                return StatusTarefaEnum.Concluidas;
+
+            return StatusTarefaEnum.Todos;
         }
 
         private void btnTarefasConcluidas_CheckedChanged(object sender, EventArgs e)

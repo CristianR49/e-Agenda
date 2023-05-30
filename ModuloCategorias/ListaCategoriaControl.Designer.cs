@@ -1,6 +1,6 @@
-﻿namespace e_Agenda.ModuloCompromissos
+﻿namespace e_Agenda.ModuloCategorias
 {
-    partial class ListaCompromissoControl
+    partial class ListaCategoriaControl
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,33 +28,31 @@
         /// </summary>
         private void InitializeComponent()
         {
-            listCompromisso = new ListBox();
+            listCategoria = new ListBox();
             SuspendLayout();
             // 
-            // listCompromisso
+            // listCategoria
             // 
-            listCompromisso.Dock = DockStyle.Fill;
-            listCompromisso.FormattingEnabled = true;
-            listCompromisso.ItemHeight = 15;
-            listCompromisso.Location = new Point(0, 0);
-            listCompromisso.Margin = new Padding(2, 2, 2, 2);
-            listCompromisso.Name = "listCompromisso";
-            listCompromisso.Size = new Size(469, 268);
-            listCompromisso.TabIndex = 0;
+            listCategoria.Dock = DockStyle.Fill;
+            listCategoria.FormattingEnabled = true;
+            listCategoria.ItemHeight = 15;
+            listCategoria.Location = new Point(0, 0);
+            listCategoria.Name = "listCategoria";
+            listCategoria.Size = new Size(214, 199);
+            listCategoria.TabIndex = 0;
             // 
-            // ListaCompromissoControl
+            // ListaCategoriaControl
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            Controls.Add(listCompromisso);
-            Margin = new Padding(2, 2, 2, 2);
-            Name = "ListaCompromissoControl";
-            Size = new Size(469, 268);
+            Controls.Add(listCategoria);
+            Name = "ListaCategoriaControl";
+            Size = new Size(214, 199);
             ResumeLayout(false);
         }
 
         #endregion
 
-        private ListBox listCompromisso;
+        private ListBox listCategoria;
     }
 }

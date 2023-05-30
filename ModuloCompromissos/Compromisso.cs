@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace e_Agenda.ModuloCompromissos
 {
-    public class Compromisso : EntidadeBase
+    public class Compromisso : EntidadeBase<Compromisso>
     {
         public int id;
         public string assunto;
         public string local;
         public Contato contato;
-        public DateOnly dataCompromisso;
-        public TimeOnly horaInicio;
-        public TimeOnly horaTermino;
+        public DateTime dataCompromisso;
+        public DateTime horaInicio;
+        public DateTime horaTermino;
 
-        public Compromisso(string assunto, string local, Contato contato, DateOnly dataCompromisso, TimeOnly horaInicio, TimeOnly horaTermino)
+        public Compromisso(string assunto, string local, Contato contato, DateTime dataCompromisso, DateTime horaInicio, DateTime horaTermino)
         {
             this.assunto = assunto;
             this.local = local;
@@ -28,9 +28,56 @@ namespace e_Agenda.ModuloCompromissos
             this.horaTermino = horaTermino;
         }
 
+        public override void AtualizarInformacoes(Compromisso registroAtualizado)
+        {
+            this.id = registroAtualizado.id;
+            this.assunto = registroAtualizado.assunto;
+            this.local = registroAtualizado.local;
+            this.contato = registroAtualizado.contato;
+            this.dataCompromisso = registroAtualizado.dataCompromisso;
+            this.horaInicio = registroAtualizado.horaInicio;
+            this.horaTermino = registroAtualizado.horaTermino;
+        }
+
         public override string ToString()
         {
-            return $"id: {id} Assunto: {assunto} Local: {local} Contato: {contato.nome} Data do compromisso: {dataCompromisso} Hora de início: {horaInicio} Hora do término: {horaTermino}";
+            return $"id: {id} Assunto: {assunto} Local: {local} Contato: {contato.nome} Data do compromisso: {dataCompromisso.Day}/{dataCompromisso.Month}/{dataCompromisso.Year} Hora de início: {horaInicio.Hour}:{horaInicio.Minute} Hora do término: {horaTermino.Hour}:{horaTermino.Minute}";
+        }
+
+        public override List<string> Validar()
+        {
+            List<string> erros = new List<string>();
+
+            if(string.IsNullOrEmpty(assunto))
+            {
+                erros.Add("O campo \"assunto\" é obrigatório");
+            }
+            if (string.IsNullOrEmpty(local))
+            {
+                erros.Add("O campo \"local\" é obrigatório");
+            }
+            if (contato == null)
+            {
+                erros.Add("O campo \"contato\" é obrigatório");
+            }
+            if (dataCompromisso == null)
+            {
+                erros.Add("O campo \"data do compromisso\" é obrigatório");
+            }
+            if (horaInicio == null)
+            {
+                erros.Add("O campo \"horario de início\" é obrigatório");
+            }
+            if (horaTermino == null)
+            {
+                erros.Add("O campo \"horario do término\" é obrigatório");
+            }
+            if (horaInicio > horaTermino)
+            {
+                erros.Add("Horário de início não pode ser maior que o horário de término!");
+            }
+
+            return erros;
         }
     }
 }

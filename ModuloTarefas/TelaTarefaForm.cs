@@ -8,50 +8,55 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using e_Agenda.Compartilhado;
 
 namespace e_Agenda.ModuloTarefas
 {
     public partial class TelaTarefaForm : Form
     {
         private Tarefa tarefa;
-        public TelaTarefaForm()
+        public TelaTarefaForm(bool edicaoDeTarefa)
         {
             InitializeComponent();
-        }
 
-        public Tarefa Tarefa
-        {
-            set
+            this.ConfigurarDialog();
+
+            CarregarPrioridades();
+
+            if (edicaoDeTarefa)
             {
-                txtId.Text = value.id.ToString();
-                txtTitulo.Text = value.titulo;
-                boxPrioridade.SelectedItem = value.prioridade;
-            }
-            get
-            {
-                return tarefa;
+                dateDataCriacao.Enabled = false;
             }
         }
 
-        private void btnGravar_Click(object sender, EventArgs e)
+        private void CarregarPrioridades()
         {
+            PrioridadeTarefaEnum[] prioridades = Enum.GetValues<PrioridadeTarefaEnum>();
+
+            foreach (PrioridadeTarefaEnum p in prioridades)
+            {
+                boxPrioridade.Items.Add(p);
+            }
+        }
+
+        public void ConfigurarTela(Tarefa tarefa)
+        {
+            txtId.Text = tarefa.id.ToString();
+            txtTitulo.Text = tarefa.titulo;
+            boxPrioridade.SelectedItem = tarefa.prioridade;
+        }
+
+        public Tarefa ObterTarefa()
+        {
+            int id = Convert.ToInt32(txtId.Text);
+
             string titulo = txtTitulo.Text;
 
-            Tarefa.Prioridade prioridade = (Tarefa.Prioridade)boxPrioridade.SelectedItem;
+            PrioridadeTarefaEnum prioridade = (PrioridadeTarefaEnum)boxPrioridade.SelectedItem;
 
-            tarefa = new Tarefa(titulo, prioridade);
+            DateTime dataCriacao = dateDataCriacao.Value;
 
-            if (txtId.Text != "0")
-                tarefa.id = Convert.ToInt32(txtId.Text);
-        }
-
-        private void boxPrioridade_MouseClick(object sender, MouseEventArgs e)
-        {
-            boxPrioridade.Items.Clear();
-
-            boxPrioridade.Items.Add(Tarefa.Prioridade.Alta);
-            boxPrioridade.Items.Add(Tarefa.Prioridade.Media);
-            boxPrioridade.Items.Add(Tarefa.Prioridade.Baixa);
+            return new Tarefa(id, titulo, prioridade, dataCriacao);
         }
     }
 }

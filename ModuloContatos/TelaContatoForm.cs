@@ -1,4 +1,5 @@
-﻿using e_Agenda.WinApp.ModuloContatos;
+﻿using e_Agenda.Compartilhado;
+using e_Agenda.WinApp.ModuloContatos;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,26 +19,21 @@ namespace e_Agenda.ModuloContatos
         public TelaContatoForm()
         {
             InitializeComponent();
+
+            this.ConfigurarDialog();
         }
 
-        public Contato Contato
+        public void ConfigurarTela(Contato contato)
         {
-            set
-            {
-                txtId.Text = value.id.ToString();
-                txtNome.Text = value.nome;
-                txtTelefone.Text = value.telefone;
-                txtEmail.Text = value.email;
-                txtCargo.Text = value.cargo;
-                txtEmpresa.Text = value.empresa;
-            }
-            get
-            {
-                return contato;
-            }
+            txtId.Text = contato.id.ToString();
+            txtNome.Text = contato.nome;
+            txtTelefone.Text = contato.telefone;
+            txtEmail.Text = contato.email;
+            txtCargo.Text = contato.cargo;
+            txtEmpresa.Text = contato.empresa;
         }
 
-        private void btnGravar_Click(object sender, EventArgs e)
+        public Contato ObterContato()
         {
             string nome = txtNome.Text;
 
@@ -51,8 +47,13 @@ namespace e_Agenda.ModuloContatos
 
             contato = new Contato(nome, telefone, email, cargo, empresa);
 
-            if (txtId.Text != "0")
-                contato.id = Convert.ToInt32(txtId.Text);
+            return contato;
+        }
+
+        private void btnGravar_Click(object sender, EventArgs e)
+        {
+
+
         }
     }
 }

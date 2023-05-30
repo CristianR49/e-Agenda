@@ -25,13 +25,13 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
         public override void Inserir()
         {
-            TelaTarefaForm telaTarefa = new TelaTarefaForm();
+            TelaTarefaForm telaTarefa = new TelaTarefaForm(edicaoDeTarefa: false);
 
             DialogResult opcaoEscolhida = telaTarefa.ShowDialog();
 
             if (opcaoEscolhida == DialogResult.OK)
             {
-                Tarefa tarefa = telaTarefa.Tarefa;
+                Tarefa tarefa = telaTarefa.ObterTarefa();
 
                 repositorioTarefa.Inserir(tarefa);
 
@@ -53,14 +53,17 @@ namespace e_Agenda.WinApp.ModuloTarefa
                 return;
             }
 
-            TelaTarefaForm telaTarefa = new TelaTarefaForm();
-            telaTarefa.Tarefa = tarefa;
+            TelaTarefaForm telaTarefa = new TelaTarefaForm(edicaoDeTarefa: true);
+
+            telaTarefa.ConfigurarTela(tarefa);
 
             DialogResult opcaoEscolhida = telaTarefa.ShowDialog();
 
             if (opcaoEscolhida == DialogResult.OK)
             {
-                repositorioTarefa.Editar(telaTarefa.Tarefa);
+                Tarefa tarefaAtualizada = telaTarefa.ObterTarefa();
+
+                repositorioTarefa.Editar(tarefa, tarefaAtualizada);
 
                 CarregarTarefas();
             }
@@ -98,46 +101,39 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
             if (opcaoEscolhida == DialogResult.OK)
             {
-                if(telaFiltro.TodasAsTarefasCheck)
+
+                List<Tarefa> tarefas = null;
+
+                StatusTarefaEnum status = telaFiltro.ObterFiltroTarefa();
+
+                switch(status)
                 {
-                    CarregarTarefas();
 
-                    telaFiltro.TodasAsTarefasCheck = false;
+                    case StatusTarefaEnum.Concluidas:
+                        tarefas = repositorioTarefa.SelecionarConcluidas();
+                        break;
+
+                    case StatusTarefaEnum.Pendentes:
+                        tarefas = repositorioTarefa.SelecionarPendentes();
+                        break;
+
+                    default:
+                        tarefas = repositorioTarefa.SelecionarTodosOrdenadoPorPrioridade();
+                        break;
                 }
-                
-                if(telaFiltro.TarefasPendentesCheck)
-                {
-                    VisualizarTarefasPendentes();
 
-                    telaFiltro.TarefasPendentesCheck = false;
-                }
-
-                if(telaFiltro.TarefasConcluidasCheck)
-                {
-                    VisualizarTarefasConcluidas();
-
-                    telaFiltro.TarefasConcluidasCheck = false;
-                }
+                CarregarTarefas(tarefas);
             }
         }
 
-        private void VisualizarTarefasPendentes()
+        private void CarregarTarefas(List<Tarefa> tarefas)
         {
-            List<Tarefa> tarefas = repositorioTarefa.SelecionarTodos();
-
-            listaTarefa.MostrarTarefasPendentes(tarefas);
-        }
-
-        private void VisualizarTarefasConcluidas()
-        {
-            List<Tarefa> tarefas = repositorioTarefa.SelecionarTodos();
-
-            listaTarefa.MostrarTarefasConcluidas(tarefas);
+            listaTarefa.AtualizarRegistros(tarefas);
         }
 
         private void CarregarTarefas()
         {
-            List<Tarefa> tarefas = repositorioTarefa.SelecionarTodos();
+            List<Tarefa> tarefas = repositorioTarefa.SelecionarTodosOrdenadoPorPrioridade();
 
             listaTarefa.AtualizarRegistros(tarefas);
         }
@@ -180,23 +176,18 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
             if (opcaoEscolhida == DialogResult.OK)
             {
-                int contador = 0;
-                foreach (string s in telaItem.DescricaoItems)
+                List<Item> itensParaAdicionar = telaItem.ObterItensCadastrados();
+
+                foreach (Item i in itensParaAdicionar)
                 {
-                    string descricao = telaItem.DescricaoItems[contador];
-
-                    Conclusao conclusao = Conclusao.Pendente;
-
-                    Item item = new Item(descricao, conclusao);
-
-                    tarefa.items.Add(item);
-
-                    contador++;
+                    tarefa.AdicionarItem(i);
                 }
+
+                repositorioTarefa.Editar(tarefa.id, tarefa);
             }
         }
 
-        internal void MostrarItemsConcluidos()
+        public void AtualizarConclusaoDosItens()
         {
             Tarefa tarefa = listaTarefa.ObterTarefaSelecionada();
 
@@ -214,20 +205,7 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
             telaItem.TarefaVerificada = tarefa;
 
-            int contador = 0;
-            foreach (Item i in tarefa.items)
-            {
-                telaItem.AdicionarEmCheckedListItems(i.descricao);
-
-                if (i.conclusao == Item.Conclusao.Concluido)
-                    telaItem.CheckedListItemsSetItemChecked(contador, true);
-                else
-                    telaItem.CheckedListItemsSetItemChecked(contador, false);
-
-                contador++;
-            }
-
-            
+            telaItem.ConfigurarTela();
 
             DialogResult opcaoEscolhida = telaItem.ShowDialog();
 
@@ -235,43 +213,33 @@ namespace e_Agenda.WinApp.ModuloTarefa
             {
                 MarcarConcluidoNosItemsChecados(tarefa, telaItem);
 
-                DefinirPercentagemDeConclusãoNaTarefa(tarefa);
+                DeixarItensPendentes(tarefa, telaItem);
+
+                tarefa.CalcularPercentualConcluido();
+
+                tarefa.ConcluirDataTarefa();
 
                 CarregarTarefas();
             }
         }
 
-        private static void DefinirPercentagemDeConclusãoNaTarefa(Tarefa tarefa)
+        private void DeixarItensPendentes(Tarefa tarefa, TelaItemsConcluidosForm telaItem)
         {
-            decimal percentualDeCadaItem = 100m / tarefa.items.Count();
+            List<Item> itensMarcados = telaItem.ObterItensDesmarcados();
 
-            decimal percentualConcluido = 0m;
-
-            foreach (Item i in tarefa.items)
+            foreach (Item i in itensMarcados)
             {
-                if (i.conclusao == Conclusao.Concluido)
-                    percentualConcluido += percentualDeCadaItem;
+                tarefa.DesmarcarItem(i);
             }
-
-            tarefa.percentualConcluido = percentualConcluido;
-
-            if (percentualConcluido > 99)
-                tarefa.dataConclusao = DateTime.Now;
         }
 
         private static void MarcarConcluidoNosItemsChecados(Tarefa tarefa, TelaItemsConcluidosForm telaItem)
         {
-            int quantidadeDeItensNaCheckedList = telaItem.RetornarCheckedListItemsQuantidadeDeItems();
+            List<Item> itensMarcados = telaItem.ObterItensMarcados();
 
-            for (int i = 0; i < quantidadeDeItensNaCheckedList; i++)
+            foreach (Item i in itensMarcados)
             {
-                bool itemChecado = telaItem.RetornarCheckedListItemsGetItemChecked(i);
-
-                if (itemChecado == true)
-                    tarefa.items[i].conclusao = Item.Conclusao.Concluido;
-
-                if (itemChecado == false)
-                    tarefa.items[i].conclusao = Item.Conclusao.Pendente;
+                tarefa.ConcluirItem(i);
             }
         }
     }

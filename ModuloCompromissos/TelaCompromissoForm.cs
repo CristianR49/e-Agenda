@@ -1,4 +1,5 @@
-﻿using e_Agenda.WinApp.ModuloContatos;
+﻿using e_Agenda.Compartilhado;
+using e_Agenda.WinApp.ModuloContatos;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,43 +16,45 @@ namespace e_Agenda.ModuloCompromissos
     public partial class TelaCompromissoForm : Form
     {
         private Compromisso compromisso;
-        public RepositorioContato repositorioContato;
         private List<Contato> contatos;
+        private TelaPrincipalForm telaPrincipal;
         public List<Contato> Contatos { set { contatos = value; } }
-        public TelaCompromissoForm()
+
+        public TelaCompromissoForm(List<Contato> contatos)
         {
             InitializeComponent();
+
+            this.ConfigurarDialog();
+
+            CarregarContatos(contatos);
+
+            boxContato.DisplayMember = "nome";
         }
 
-        public Compromisso Compromisso
+        private void CarregarContatos(List<Contato> contatos)
         {
-            get
-            {
-                return compromisso;
-            }
-            set
-            {
-                txtId.Text = value.id.ToString();
-                txtAssunto.Text = value.assunto;
-                boxContato.SelectedItem = value.contato;
-                txtLocal.Text = value.local;
-                txtDataCompromisso.Text = value.dataCompromisso.ToString();
-                txtHorarioInicio.Text = value.horaInicio.ToString();
-                txtHorarioTermino.Text = value.horaTermino.ToString();
-            }
-        }
-
-        private void boxContato_MouseClick(object sender, MouseEventArgs e)
-        {
-            boxContato.Items.Clear();
-
             foreach (Contato c in contatos)
             {
                 boxContato.Items.Add(c);
             }
         }
 
-        private void btnGravar_Click(object sender, EventArgs e)
+        public void ConfigurarTela(Compromisso compromisso)
+        {
+            txtId.Text = compromisso.id.ToString();
+            txtAssunto.Text = compromisso.assunto;
+            if (compromisso.contato != null)
+            {
+                boxContato.SelectedItem = compromisso.contato;
+                chkSelecionarContato.Checked = true;
+            }
+            txtLocal.Text = compromisso.local;
+            dtpDataCompromisso.Value = compromisso.dataCompromisso;
+            dtpHorarioInicio.Value = compromisso.horaInicio;
+            dtpHorarioTermino.Value = compromisso.horaTermino;
+        }
+
+        public Compromisso ObterCompromisso()
         {
             string assunto = txtAssunto.Text;
 
@@ -59,18 +62,39 @@ namespace e_Agenda.ModuloCompromissos
 
             string local = txtLocal.Text;
 
-            DateOnly dataCompromisso = DateOnly.Parse(txtDataCompromisso.Text);
+            DateTime dataCompromisso = dtpDataCompromisso.Value;
 
-            TimeOnly horarioInicio = TimeOnly.Parse(txtHorarioInicio.Text);
+            DateTime horarioInicio = dtpHorarioInicio.Value;
 
-            TimeOnly horarioTermino = TimeOnly.Parse(txtHorarioTermino.Text);
+            DateTime horarioTermino = dtpHorarioTermino.Value;
 
             compromisso = new Compromisso(assunto, local, contato, dataCompromisso, horarioInicio, horarioTermino);
 
-            if (txtId.Text != "0")
+            return compromisso;
+        }
+
+        private void btnGravar_Click(object sender, EventArgs e)
+        {
+            Compromisso compromisso = ObterCompromisso();
+
+            List<string> erros = compromisso.Validar();
+
+            if (erros.Count > 0)
             {
-                compromisso.id = Convert.ToInt32(txtId.Text);
+                TelaPrincipalForm telaPrincipal = TelaPrincipalForm.TelaPrincipal;
+
+                DialogResult = DialogResult.None;
+
+                telaPrincipal.AtualizarRodape(erros[0]);
+
+                return;
             }
+        }
+
+        private void chkSelecionarContato_CheckedChanged(object sender, EventArgs e)
+        {
+            boxContato.Enabled = !boxContato.Enabled;
+            boxContato.SelectedIndex = -1;
         }
     }
 }

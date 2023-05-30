@@ -28,45 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            checkedListItems = new CheckedListBox();
-            label1 = new Label();
-            lblTarefa = new Label();
+            listaItens = new CheckedListBox();
             btnGravar = new Button();
             btnCancelar = new Button();
+            txtTarefa = new TextBox();
+            label2 = new Label();
             SuspendLayout();
             // 
-            // checkedListItems
+            // listaItens
             // 
-            checkedListItems.FormattingEnabled = true;
-            checkedListItems.Location = new Point(46, 65);
-            checkedListItems.Name = "checkedListItems";
-            checkedListItems.Size = new Size(328, 256);
-            checkedListItems.TabIndex = 0;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(58, 24);
-            label1.Name = "label1";
-            label1.Size = new Size(62, 25);
-            label1.TabIndex = 1;
-            label1.Text = "Tarefa:";
-            // 
-            // lblTarefa
-            // 
-            lblTarefa.AutoSize = true;
-            lblTarefa.Location = new Point(115, 24);
-            lblTarefa.Name = "lblTarefa";
-            lblTarefa.Size = new Size(57, 25);
-            lblTarefa.TabIndex = 2;
-            lblTarefa.Text = "tarefa";
+            listaItens.FormattingEnabled = true;
+            listaItens.Location = new Point(31, 48);
+            listaItens.Margin = new Padding(2, 2, 2, 2);
+            listaItens.Name = "listaItens";
+            listaItens.Size = new Size(231, 148);
+            listaItens.TabIndex = 0;
             // 
             // btnGravar
             // 
             btnGravar.DialogResult = DialogResult.OK;
-            btnGravar.Location = new Point(183, 351);
+            btnGravar.Location = new Point(128, 211);
+            btnGravar.Margin = new Padding(2, 2, 2, 2);
             btnGravar.Name = "btnGravar";
-            btnGravar.Size = new Size(112, 56);
+            btnGravar.Size = new Size(78, 34);
             btnGravar.TabIndex = 14;
             btnGravar.Text = "Gravar";
             btnGravar.UseVisualStyleBackColor = true;
@@ -74,28 +58,43 @@
             // btnCancelar
             // 
             btnCancelar.DialogResult = DialogResult.Cancel;
-            btnCancelar.Location = new Point(301, 351);
+            btnCancelar.Location = new Point(211, 211);
+            btnCancelar.Margin = new Padding(2, 2, 2, 2);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(112, 56);
+            btnCancelar.Size = new Size(78, 34);
             btnCancelar.TabIndex = 15;
             btnCancelar.Text = "Cancelar";
             btnCancelar.UseVisualStyleBackColor = true;
             // 
+            // txtTarefa
+            // 
+            txtTarefa.Location = new Point(82, 20);
+            txtTarefa.Name = "txtTarefa";
+            txtTarefa.ReadOnly = true;
+            txtTarefa.Size = new Size(168, 23);
+            txtTarefa.TabIndex = 19;
+            // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.Location = new Point(36, 23);
+            label2.Name = "label2";
+            label2.Size = new Size(41, 15);
+            label2.TabIndex = 18;
+            label2.Text = "Tarefa:";
+            // 
             // TelaItemsConcluidosForm
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(425, 419);
+            ClientSize = new Size(298, 251);
+            Controls.Add(txtTarefa);
+            Controls.Add(label2);
             Controls.Add(btnCancelar);
             Controls.Add(btnGravar);
-            Controls.Add(lblTarefa);
-            Controls.Add(label1);
-            Controls.Add(checkedListItems);
-            MaximizeBox = false;
-            MinimizeBox = false;
+            Controls.Add(listaItens);
+            Margin = new Padding(2, 2, 2, 2);
             Name = "TelaItemsConcluidosForm";
-            ShowIcon = false;
-            StartPosition = FormStartPosition.CenterScreen;
             Text = "Items Concluidos";
             ResumeLayout(false);
             PerformLayout();
@@ -103,10 +102,10 @@
 
         #endregion
 
-        private CheckedListBox checkedListItems;
-        private Label label1;
-        private Label lblTarefa;
+        private CheckedListBox listaItens;
         private Button btnGravar;
         private Button btnCancelar;
+        private TextBox txtTarefa;
+        private Label label2;
     }
 }

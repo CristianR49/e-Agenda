@@ -1,4 +1,5 @@
-﻿using System;
+﻿using e_Agenda.Compartilhado;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,55 +14,41 @@ namespace e_Agenda.ModuloCompromissos
 
     public partial class TelaFiltroCompromissoForm : Form
     {
-        private bool todosOsCompromissosCheck;
-        private bool compromissosPassadosCheck;
-        private bool compromissosFuturosCheck;
 
         private DateTime dataInicio;
         private DateTime dataFim;
 
-        public DateTime DataInicio { get{return dataInicio;}}
-        public DateTime DataFim { get{return dataFim;}}
-        public bool TodosOsCompromissosCheck { get{return todosOsCompromissosCheck;} set{todosOsCompromissosCheck = value;}}
-        public bool CompromissosPassadosCheck { get{return compromissosPassadosCheck;} set{compromissosPassadosCheck = value;}}
-        public bool CompromissosFuturosCheck { get{return compromissosFuturosCheck;} set{compromissosFuturosCheck = value;}}
+        public DateTime DataInicio { get { return dataInicio; } }
+        public DateTime DataFim { get { return dataFim; } }
         public TelaFiltroCompromissoForm()
         {
             InitializeComponent();
+
+            this.ConfigurarDialog();
         }
 
-        private void btnTodosOsCompromissos_CheckedChanged(object sender, EventArgs e)
+        public StatusCompromissoEnum ObterStatus()
         {
             if (btnTodosOsCompromissos.Checked == true)
             {
-                todosOsCompromissosCheck = true;
+                return StatusCompromissoEnum.Todos;
             }
-        }
-
-        private void btnCompromissosPassados_CheckedChanged(object sender, EventArgs e)
-        {
-            if (btnCompromissosPassados.Checked == true)
+            else if (btnCompromissosPassados.Checked == true)
             {
-                compromissosPassadosCheck = true;
+                return StatusCompromissoEnum.Passados;
             }
+            else if (btnCompromissosFuturos.Checked == true)
+            {
+                return StatusCompromissoEnum.Futuros;
+            }
+            return StatusCompromissoEnum.Todos;
         }
 
         private void btnCompromissosFuturos_CheckedChanged(object sender, EventArgs e)
         {
-            if (btnCompromissosFuturos.Checked == true)
-            {
-                compromissosFuturosCheck = true;
-            }
+            dateInicio.Enabled = !dateInicio.Enabled;
+            dateFinal.Enabled = !dateFinal.Enabled;
         }
 
-        private void DateTimeInicio_ValueChanged(object sender, EventArgs e)
-        {
-            dataInicio = DateTimeInicio.Value;
-        }
-
-        private void DateTimeFinal_ValueChanged(object sender, EventArgs e)
-        {
-            dataFim = DateTimeFinal.Value;
-        }
     }
 }

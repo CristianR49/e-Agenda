@@ -6,7 +6,7 @@ namespace e_Agenda.WinApp.ModuloContatos
     public class ControladorContato : ControladorBase
     {
         private ListaContatoControl listaContato;
-
+        private RepositorioContato repositorioContato;
         public ControladorContato(RepositorioContato repositorioContato)
         {
             this.repositorioContato = repositorioContato;
@@ -28,7 +28,7 @@ namespace e_Agenda.WinApp.ModuloContatos
 
             if (opcaoEscolhida == DialogResult.OK)
             {
-                Contato contato = telaContato.Contato;
+                Contato contato = telaContato.ObterContato();
 
                 repositorioContato.Inserir(contato);
 
@@ -51,13 +51,16 @@ namespace e_Agenda.WinApp.ModuloContatos
             }
 
             TelaContatoForm telaContato = new TelaContatoForm();
-            telaContato.Contato = contato;
+
+            telaContato.ConfigurarTela(contato);
 
             DialogResult opcaoEscolhida = telaContato.ShowDialog();
 
             if (opcaoEscolhida == DialogResult.OK)
             {
-                repositorioContato.Editar(telaContato.Contato);
+                Contato contatoAtualizado = telaContato.ObterContato();
+
+                repositorioContato.Editar(contato, contatoAtualizado);
 
                 CarregarContatos();
             }
@@ -108,10 +111,6 @@ namespace e_Agenda.WinApp.ModuloContatos
         public override string ObterTipoRegistro()
         {
             return "Cadastro de Contatos";            
-        }
-
-        public override void Filtrar()
-        {
         }
     }
 }

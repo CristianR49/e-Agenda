@@ -9,7 +9,6 @@ namespace e_Agenda.Compartilhado
 {
     public abstract class ControladorBase
     {
-        public RepositorioContato repositorioContato;
         public abstract string ToolTipInserir { get; }
 
         public abstract string ToolTipEditar { get; }
@@ -21,11 +20,15 @@ namespace e_Agenda.Compartilhado
 
         public abstract void Editar();
 
-        public abstract void Filtrar();
+        public virtual void Filtrar() 
+        { 
+        }
         public abstract UserControl ObterLista();
 
         public abstract string ObterTipoRegistro();
 
         public abstract void Excluir();
+
+        public abstract List<EntidadeBase<Object>> SelecionarRegistros();
     }
 }

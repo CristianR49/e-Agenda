@@ -10,25 +10,30 @@ namespace e_Agenda.ModuloCompromissos
 {
     public class ControladorCompromisso : ControladorBase
     {
+        private RepositorioContato repositorioContato;
         private RepositorioCompromisso repositorioCompromisso;
         private ListaCompromissoControl listaCompromissoControl;
-        private TelaCompromissoForm telaCompromisso = new TelaCompromissoForm();
-        private TelaFiltroCompromissoForm telaFiltro = new TelaFiltroCompromissoForm();
-        public ControladorCompromisso(RepositorioCompromisso repositorioCompromisso)
+
+        public ControladorCompromisso(RepositorioCompromisso repositorioCompromisso, RepositorioContato repositorioContato)
         {
             this.repositorioCompromisso = repositorioCompromisso;
+            this.repositorioContato = repositorioContato;
         }
         public override string ToolTipInserir { get { return "Inserir um novo Compromisso"; } }
 
         public override string ToolTipEditar { get { return "Editar um Compromisso existente"; } }
 
-        public override string ToolTipExcluir { get { return "Excluir um compromisso Compromisso existente"; } }
+        public override string ToolTipExcluir { get { return "Excluir um Compromisso existente"; } }
 
         public override string NomeEntidade { get { return "Compromisso"; } }
+
         public override void Inserir()
         {
+            List<Contato> contatos = repositorioContato.SelecionarTodos();
 
-            telaCompromisso.Contatos = repositorioContato.SelecionarTodos();
+            TelaCompromissoForm telaCompromisso = new TelaCompromissoForm(contatos);
+
+            telaCompromisso.Contatos = contatos;
 
             DialogResult opcaoEscolhida = telaCompromisso.ShowDialog();
 
@@ -36,7 +41,7 @@ namespace e_Agenda.ModuloCompromissos
             {
                 MessageBox.Show("Informações gravadas");
 
-                Compromisso compromisso = telaCompromisso.Compromisso;
+                Compromisso compromisso = telaCompromisso.ObterCompromisso();
 
                 repositorioCompromisso.Inserir(compromisso);
 
@@ -47,6 +52,12 @@ namespace e_Agenda.ModuloCompromissos
         }
         public override void Editar()
         {
+
+            List<Contato> contatos = repositorioContato.SelecionarTodos();
+
+
+            TelaCompromissoForm telaCompromisso = new TelaCompromissoForm(contatos);
+
             Compromisso compromisso = listaCompromissoControl.ObterCompromissoSelecionado();
 
             if (compromisso == null)
@@ -59,9 +70,9 @@ namespace e_Agenda.ModuloCompromissos
                 return;
             }
 
-            telaCompromisso.Contatos = repositorioContato.SelecionarTodos();
+            telaCompromisso.Contatos = contatos;
 
-            telaCompromisso.Compromisso = compromisso;
+            telaCompromisso.ConfigurarTela(compromisso);
 
             DialogResult opcaoEscolhida = telaCompromisso.ShowDialog();
 
@@ -69,9 +80,9 @@ namespace e_Agenda.ModuloCompromissos
             {
                 MessageBox.Show("Informações Editadas");
 
-                compromisso = telaCompromisso.Compromisso;
+                Compromisso compromissoAtualizado = telaCompromisso.ObterCompromisso();
 
-                repositorioCompromisso.Editar(compromisso);
+                repositorioCompromisso.Editar(compromisso, compromissoAtualizado);
 
                 CarregarCompromissos();
             }
@@ -110,6 +121,11 @@ namespace e_Agenda.ModuloCompromissos
             listaCompromissoControl.AtualizarRegistros(compromissos);
         }
 
+        private void CarregarCompromissos(List<Compromisso> compromissos)
+        {
+            listaCompromissoControl.AtualizarRegistros(compromissos);
+        }
+
 
         public override UserControl ObterLista()
         {
@@ -128,71 +144,37 @@ namespace e_Agenda.ModuloCompromissos
 
         public override void Filtrar()
         {
+            TelaFiltroCompromissoForm telaFiltro = new TelaFiltroCompromissoForm();
+
             DialogResult opcaoEscolhida = telaFiltro.ShowDialog();
 
             if (opcaoEscolhida == DialogResult.OK)
             {
 
-                if (telaFiltro.TodosOsCompromissosCheck == true)
-                {
-                    CarregarCompromissos();
+                StatusCompromissoEnum statusFiltro = telaFiltro.ObterStatus();
 
-                    telaFiltro.TodosOsCompromissosCheck = false;
-                }
-                if (telaFiltro.CompromissosPassadosCheck == true)
-                {
-                    VisualizarCompromissosPassados();
+                List<Compromisso> compromissos = null;
 
-                    telaFiltro.CompromissosPassadosCheck = false;
-                }
-                if (telaFiltro.CompromissosFuturosCheck == true)
+                if (statusFiltro == StatusCompromissoEnum.Todos)
                 {
-                    VisualizarCompromissosFuturos(telaFiltro.DataInicio, telaFiltro.DataFim);
+                    compromissos = repositorioCompromisso.SelecionarTodos();
 
-                    telaFiltro.CompromissosFuturosCheck = false;
                 }
+                if (statusFiltro == StatusCompromissoEnum.Passados)
+                {
+                    compromissos = repositorioCompromisso.SelecionarCompromissosPassados(DateTime.Now);
+
+                }
+                if (statusFiltro == StatusCompromissoEnum.Futuros)
+                {
+                    compromissos = repositorioCompromisso.SelecionarCompromissosFuturos(telaFiltro.DataInicio, telaFiltro.DataFim);
+                }
+
+                CarregarCompromissos(compromissos);
+
+                TelaPrincipalForm.telaPrincipal.AtualizarRodape($"Visualizando {compromissos.Count} Compromisso(s)");
 
             }
-        }
-
-        private void VisualizarCompromissosPassados()
-        {
-
-            List<Compromisso> compromissos = repositorioCompromisso.SelecionarTodos();
-
-            List<Compromisso> compromissosPassados = new List<Compromisso>();
-
-            DateTime hoje = DateTime.Now;
-
-            DateOnly dataHoje = DateOnly.FromDateTime(hoje);
-
-            TimeOnly horaAgora = TimeOnly.FromDateTime(hoje);
-
-            foreach (Compromisso c in compromissos)
-            {
-                if (c.dataCompromisso < dataHoje || c.dataCompromisso == dataHoje && c.horaTermino < horaAgora)
-                    compromissosPassados.Add(c);
-            }
-
-            listaCompromissoControl.MostrarCompromissosPassados(compromissosPassados);
-        }
-
-        private void VisualizarCompromissosFuturos(DateTime dataInicio, DateTime dataFim)
-        {
-            List<Compromisso> compromissos = repositorioCompromisso.SelecionarTodos();
-
-            List<Compromisso> compromissosFuturos = new List<Compromisso>();
-
-
-
-            foreach (Compromisso c in compromissos)
-            {
-                DateTime data = c.dataCompromisso.ToDateTime(TimeOnly.Parse("00:00"));
-                if (data > dataInicio && data < dataFim)
-                    compromissosFuturos.Add(c);
-            }
-
-            listaCompromissoControl.MostrarCompromissosFuturos(compromissosFuturos);
         }
 
 

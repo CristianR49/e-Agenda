@@ -6,8 +6,12 @@ using System.Threading.Tasks;
 
 namespace e_Agenda.Compartilhado
 {
-    public abstract class EntidadeBase
+    public abstract class EntidadeBase<TEntidade>
     {
         public int id;
+
+        public abstract void AtualizarInformacoes(TEntidade registroAtualizado);
+
+        public abstract List<string> Validar();
     }
 }

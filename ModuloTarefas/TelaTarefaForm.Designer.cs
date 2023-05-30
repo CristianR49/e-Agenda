@@ -36,6 +36,8 @@
             btnCancelar = new Button();
             label = new Label();
             txtId = new TextBox();
+            dateDataCriacao = new DateTimePicker();
+            label3 = new Label();
             SuspendLayout();
             // 
             // label1
@@ -70,23 +72,21 @@
             boxPrioridade.Name = "boxPrioridade";
             boxPrioridade.Size = new Size(121, 23);
             boxPrioridade.TabIndex = 3;
-            boxPrioridade.MouseClick += boxPrioridade_MouseClick;
             // 
             // btnGravar
             // 
             btnGravar.DialogResult = DialogResult.OK;
-            btnGravar.Location = new Point(140, 121);
+            btnGravar.Location = new Point(140, 167);
             btnGravar.Name = "btnGravar";
             btnGravar.Size = new Size(78, 36);
             btnGravar.TabIndex = 4;
             btnGravar.Text = "Gravar";
             btnGravar.UseVisualStyleBackColor = true;
-            btnGravar.Click += btnGravar_Click;
             // 
             // btnCancelar
             // 
             btnCancelar.DialogResult = DialogResult.Cancel;
-            btnCancelar.Location = new Point(226, 121);
+            btnCancelar.Location = new Point(226, 167);
             btnCancelar.Name = "btnCancelar";
             btnCancelar.Size = new Size(78, 36);
             btnCancelar.TabIndex = 5;
@@ -111,11 +111,30 @@
             txtId.TabIndex = 7;
             txtId.Text = "0";
             // 
+            // dateDataCriacao
+            // 
+            dateDataCriacao.Format = DateTimePickerFormat.Short;
+            dateDataCriacao.Location = new Point(104, 114);
+            dateDataCriacao.Name = "dateDataCriacao";
+            dateDataCriacao.Size = new Size(121, 23);
+            dateDataCriacao.TabIndex = 8;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Location = new Point(7, 117);
+            label3.Name = "label3";
+            label3.Size = new Size(91, 15);
+            label3.TabIndex = 9;
+            label3.Text = "Data de criação:";
+            // 
             // TelaTarefaForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(316, 169);
+            ClientSize = new Size(316, 215);
+            Controls.Add(label3);
+            Controls.Add(dateDataCriacao);
             Controls.Add(txtId);
             Controls.Add(label);
             Controls.Add(btnCancelar);
@@ -140,5 +159,7 @@
         private Button btnCancelar;
         private Label label;
         private TextBox txtId;
+        private DateTimePicker dateDataCriacao;
+        private Label label3;
     }
 }

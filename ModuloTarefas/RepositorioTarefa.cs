@@ -1,4 +1,5 @@
-﻿using e_Agenda.WinApp.ModuloTarefa;
+﻿using e_Agenda.Compartilhado;
+using e_Agenda.WinApp.ModuloTarefa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,44 +8,46 @@ using System.Threading.Tasks;
 
 namespace e_Agenda.ModuloTarefas
 {
-    public class RepositorioTarefa
+    public class RepositorioTarefa : RepositorioBase<Tarefa>
     {
         List<Tarefa> tarefas = new List<Tarefa>();
-        private static int contador;
+
+        public RepositorioTarefa()
+        {
+            this.listaRegistros = this.tarefas;
+        }
 
         public void Inserir(Tarefa tarefa)
         {
-            contador++;
-            tarefa.id = contador;
+            contadorRegistros++;
+            tarefa.id = contadorRegistros;
             tarefa.dataCriacao = DateTime.Now;
             tarefa.percentualConcluido = 0;
             tarefa.items = new List<Item>();
             tarefas.Add(tarefa);
         }
 
-        public List<Tarefa> SelecionarTodos()
+        public List<Tarefa>? SelecionarConcluidas()
         {
-            return tarefas;
+            return listaRegistros
+                .Where(x => x.percentualConcluido == 100)
+                .OrderByDescending(x => x.prioridade)
+                .ToList();
         }
 
-        public void Editar(Tarefa tarefa)
+        public List<Tarefa>? SelecionarPendentes()
         {
-            Tarefa tarefaSelecionado = SelecionarPorId(tarefa.id);
-
-            tarefaSelecionado.titulo = tarefa.titulo;
-            tarefaSelecionado.prioridade = tarefa.prioridade;
+            return listaRegistros
+                .Where(x => x.percentualConcluido < 100)
+                .OrderByDescending(x => x.prioridade)
+                .ToList();
         }
 
-        private Tarefa SelecionarPorId(int id)
+        public List<Tarefa> SelecionarTodosOrdenadoPorPrioridade()
         {
-            return tarefas.FirstOrDefault(x => x.id == id);
+            return listaRegistros
+                .OrderByDescending(x => x.prioridade)
+                .ToList();
         }
-
-        public void Excluir(Tarefa tarefa)
-        {
-            tarefas.Remove(tarefa);
-        }
-
-
     }
 }

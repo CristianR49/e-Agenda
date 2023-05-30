@@ -1,4 +1,5 @@
-﻿using e_Agenda.WinApp.ModuloTarefa;
+﻿using e_Agenda.Compartilhado;
+using e_Agenda.WinApp.ModuloTarefa;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -16,31 +17,40 @@ namespace e_Agenda.ModuloTarefas
     {
         private Tarefa tarefaVerificada;
 
-        public Tarefa TarefaVerificada { get { return tarefaVerificada; } set { lblTarefa.Text = value.titulo; tarefaVerificada = value; } }
+        public Tarefa TarefaVerificada { get { return tarefaVerificada; } set { tarefaVerificada = value; /*duvida .. propriedade capsula deveria ter set para a vari encapsulada?*/ } }
 
         public TelaItemsConcluidosForm()
         {
             InitializeComponent();
+
+            this.ConfigurarDialog();
         }
 
-        public void AdicionarEmCheckedListItems(object item)
+        public void ConfigurarTela()
         {
-            checkedListItems.Items.Add(item);
+            txtTarefa.Text = tarefaVerificada.titulo;
+
+            int i = 0;
+
+            foreach (Item item in tarefaVerificada.items)
+            {
+                listaItens.Items.Add(item);
+
+                if (item.conclusao == Item.Conclusao.Concluido)
+                    listaItens.SetItemChecked(i, true);
+
+                i++;
+            }
         }
 
-        public void CheckedListItemsSetItemChecked(int indice, bool valor)
+        internal List<Item> ObterItensMarcados()
         {
-            checkedListItems.SetItemChecked(indice, valor);
+            return listaItens.CheckedItems.Cast<Item>().ToList();
         }
 
-        public bool RetornarCheckedListItemsGetItemChecked(int indice)
+        internal List<Item> ObterItensDesmarcados()
         {
-            return checkedListItems.GetItemChecked(indice);
-        }
-
-        public int RetornarCheckedListItemsQuantidadeDeItems()
-        {
-            return checkedListItems.Items.Count;
+            return listaItens.Items.Cast<Item>().Except(ObterItensMarcados()).ToList();
         }
     }
 }

@@ -21,5 +21,27 @@ namespace e_Agenda.ModuloTarefas
         {
             Pendente, Concluido
         }
+
+        public override string ToString()
+        {
+            return descricao;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Item item &&
+                   descricao == item.descricao &&
+                   conclusao == item.conclusao;
+        }
+
+        public void Concluir()
+        {
+            conclusao = Item.Conclusao.Concluido;
+        }
+
+        internal void Desconcluir()
+        {
+            conclusao = Item.Conclusao.Pendente;
+        }
     }
 }

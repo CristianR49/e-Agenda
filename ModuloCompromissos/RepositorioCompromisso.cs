@@ -8,43 +8,27 @@ using System.Threading.Tasks;
 namespace e_Agenda.ModuloCompromissos
 {
     
-    public class RepositorioCompromisso
+    public class RepositorioCompromisso : RepositorioBase<Compromisso>
     {
         public RepositorioContato repositorioContato;
         List<Compromisso> compromissos = new List<Compromisso>();
-        private static int contador;
-        public void Inserir(Compromisso compromisso)
+
+        public RepositorioCompromisso()
         {
-            contador++;
-            compromisso.id = contador;
-            compromissos.Add(compromisso);
+            this.listaRegistros = this.compromissos;
         }
 
-        internal void Editar(Compromisso compromisso)
+        public List<Compromisso> SelecionarCompromissosPassados(DateTime hoje)
         {
-            Compromisso compromissoSelecionado = EncontrarPorId(compromisso.id);
-
-            compromissoSelecionado.assunto = compromisso.assunto;
-            compromissoSelecionado.local = compromisso.local;
-            compromissoSelecionado.contato = compromisso.contato;
-            compromissoSelecionado.dataCompromisso = compromisso.dataCompromisso;
-            compromissoSelecionado.horaInicio = compromisso.horaInicio;
-            compromissoSelecionado.horaTermino = compromisso.horaTermino;
+            return compromissos.Where(x => x.dataCompromisso.Date < hoje.Date).ToList();
         }
 
-        public void Excluir(Compromisso compromisso)
+        public List<Compromisso> SelecionarCompromissosFuturos(DateTime dataInicio, DateTime dataFinal)
         {
-            compromissos.Remove(compromisso);
-        }
-
-        public List<Compromisso> SelecionarTodos()
-        {
-            return compromissos;
-        }
-
-        private Compromisso EncontrarPorId(int id)
-        {
-            return compromissos.FirstOrDefault(x => x.id == id);
+            return compromissos
+                .Where(x => x.dataCompromisso < dataFinal)
+                .Where(x => x.dataCompromisso > dataInicio)
+                .ToList();
         }
 
         public void PopularRegistrosAutomaticamente()
@@ -53,25 +37,25 @@ namespace e_Agenda.ModuloCompromissos
 
             string assunto = "Fazer trabalho";
             string local = "Faculdade";
-            DateOnly data = DateOnly.Parse("10/05/2023");
-            TimeOnly hInicio = TimeOnly.Parse("07:00:00");
-            TimeOnly hTermino = TimeOnly.Parse("10:00:00");
+            DateTime data = DateTime.Parse("10/05/2023");
+            DateTime hInicio = DateTime.Parse("07:00:00 AM");
+            DateTime hTermino = DateTime.Parse("10:00:00 AM");
 
             Compromisso compromisso1 = new Compromisso(assunto, local, contato, data, hInicio, hTermino);
 
             assunto = "Fazer pão";
             local = "Faculdade";
-            data = DateOnly.Parse("10/05/2023");
-            hInicio = TimeOnly.Parse("14:00:00");
-            hTermino = TimeOnly.Parse("16:00:00");
+            data = DateTime.Parse("10/05/2023");
+            hInicio = DateTime.Parse("14:00:00 PM");
+            hTermino = DateTime.Parse("16:00:00 PM");
 
             Compromisso compromisso2 = new Compromisso(assunto, local, contato, data, hInicio, hTermino);
 
             assunto = "Fazer compras do mês";
             local = "Mercado";
-            data = DateOnly.Parse("30/05/2023");
-            hInicio = TimeOnly.Parse("18:00:00");
-            hTermino = TimeOnly.Parse("19:00:00");
+            data = DateTime.Parse("30/05/2023");
+            hInicio = DateTime.Parse("18:00:00 PM");
+            hTermino = DateTime.Parse("19:00:00 PM");
 
             Compromisso compromisso3 = new Compromisso(assunto, local, contato, data, hInicio, hTermino);
 
@@ -80,6 +64,5 @@ namespace e_Agenda.ModuloCompromissos
             Inserir(compromisso3);
 
         }
-
     }
 }
