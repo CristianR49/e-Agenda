@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace e_Agenda.Compartilhado
 {
-    public class RepositorioBase<TEntidade>
+    public class RepositorioEmMemoriaBase<TEntidade>
         where TEntidade : EntidadeBase<TEntidade>
     {
         public List<TEntidade> listaRegistros;

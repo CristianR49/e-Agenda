@@ -11,14 +11,16 @@ namespace e_Agenda.ModuloCategorias
     internal class ControladorCategoria : ControladorBase
     {
         RepositorioCategoria repositorioCategoria;
-        ListaCategoriaControl listaCategoriaControl;
+        TabelaCategoriaControl tabelaCategoria;
         public override string ToolTipInserir => "Inserir uma nova Categoria";
 
         public override string ToolTipEditar => "Editar uma Categoria existente";
 
         public override string ToolTipExcluir => "Excluir uma Categoria existente";
 
-        public override string NomeEntidade => "Categoria"; // precisa mesmo? //duvida refato
+        public override string NomeEntidade => "Categoria";
+
+        public override int QntRegistros => repositorioCategoria.SelecionarTodos().Count;
 
         public ControladorCategoria(RepositorioCategoria repositorioCategoria)
         {
@@ -27,48 +29,117 @@ namespace e_Agenda.ModuloCategorias
 
         public override void Inserir()
         {
-            List<Categoria> categorias = repositorioCategoria.SelecionarTodos();
 
             TelaCategoriaForm telaCategoria = new TelaCategoriaForm();
 
-            Categoria categoria = listaCategoriaControl.ObterCategoriaSelecionada();
+            DialogResult resultado = telaCategoria.ShowDialog();
+
+            if (resultado == DialogResult.OK)
+            {
+                Categoria categoria = telaCategoria.ObterCategoria();
+
+                repositorioCategoria.Inserir(categoria);
+
+                CarregarCategorias();
+            }
+
+            
         }
 
         public override void Editar()
         {
+            Categoria categoriaSelecionada = ObterCategoriaSelecionada();
+
+            if (categoriaSelecionada == null) 
+            {
+                MessageBox.Show(
+                    "Escolha uma Categoria primeiro",
+                    "Edição de Categoria",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+
+                return;
+            }
+
+            TelaCategoriaForm telaCategoria = new TelaCategoriaForm();
+
+            telaCategoria.ConfigurarTela(categoriaSelecionada);
+
+            DialogResult resultado = telaCategoria.ShowDialog();
+
+            if (resultado == DialogResult.OK)
+            {
+                Categoria categoriaAtualizada = telaCategoria.ObterCategoria();
+
+                repositorioCategoria.Editar(categoriaSelecionada, categoriaAtualizada);
+
+                CarregarCategorias();
+            }
+
             
         }
 
         public override void Excluir()
         {
-            throw new NotImplementedException();
+            Categoria categoria = ObterCategoriaSelecionada();
+
+            if (categoria == null)
+            {
+                MessageBox.Show(
+                    "Escolha uma Categoria primeiro",
+                    "Exclusão de Categoria",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Exclamation);
+
+                return;
+            }
+
+            DialogResult resultado = MessageBox.Show($"Excluir Categoria {categoria.titulo}",
+                "Exclusão de Categoria",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Question
+                );
+
+            if (resultado == DialogResult.OK)
+            {
+                repositorioCategoria.Excluir(categoria);
+
+                CarregarCategorias();
+            }
         }
 
         public override UserControl ObterLista()
         {
-            if(listaCategoriaControl == null)
-            listaCategoriaControl = new ListaCategoriaControl();
+            if (tabelaCategoria == null)
+                tabelaCategoria = new TabelaCategoriaControl();
 
             CarregarCategorias();
 
-            return listaCategoriaControl;
+            return tabelaCategoria;
+        }
+
+        public override string ObterTipoRegistro()
+        {
+            return "Cadastro de Categorias";
         }
 
         private void CarregarCategorias(List<Categoria> categorias)
         {
-            listaCategoriaControl.AtualizarRegistros(categorias);
+            tabelaCategoria.AtualizarRegistros(categorias);
         }
 
         private void CarregarCategorias()
         {
             List<Categoria> categorias = repositorioCategoria.SelecionarTodos();
 
-            listaCategoriaControl.AtualizarRegistros(categorias);
+            tabelaCategoria.AtualizarRegistros(categorias);
         }
 
-        public override string ObterTipoRegistro()
+        private Categoria ObterCategoriaSelecionada()
         {
-            throw new NotImplementedException();
+            int id = tabelaCategoria.ObterIdSelecionado();
+
+            return repositorioCategoria.SelecionarPorId(id);
         }
     }
 }

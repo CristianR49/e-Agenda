@@ -68,7 +68,12 @@ namespace e_Agenda.ModuloCompromissos
 
             DateTime horarioTermino = dtpHorarioTermino.Value;
 
-            compromisso = new Compromisso(assunto, local, contato, dataCompromisso, horarioInicio, horarioTermino);
+            
+
+            if (chkSelecionarContato.Checked == false)
+                compromisso = new Compromisso(assunto, local, dataCompromisso, horarioInicio, horarioTermino);
+            else
+                compromisso = new Compromisso(assunto, local, contato, dataCompromisso, horarioInicio, horarioTermino);
 
             return compromisso;
         }

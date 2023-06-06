@@ -21,6 +21,8 @@ namespace e_Agenda.ModuloCategorias
 
         public void AtualizarRegistros(List<Categoria> categorias)
         {
+            listCategoria.Items.Clear();
+
             foreach (Categoria c in categorias)
                 listCategoria.Items.Add(c);
         }

@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace e_Agenda.ModuloTarefas
 {
-    public class RepositorioTarefa : RepositorioBase<Tarefa>
+    public class RepositorioTarefaEmMemoria : RepositorioEmMemoriaBase<Tarefa>, IRepositorioTarefa
     {
         List<Tarefa> tarefas = new List<Tarefa>();
 
-        public RepositorioTarefa()
+        public RepositorioTarefaEmMemoria()
         {
             this.listaRegistros = this.tarefas;
         }
@@ -21,7 +21,6 @@ namespace e_Agenda.ModuloTarefas
         {
             contadorRegistros++;
             tarefa.id = contadorRegistros;
-            tarefa.dataCriacao = DateTime.Now;
             tarefa.percentualConcluido = 0;
             tarefa.items = new List<Item>();
             tarefas.Add(tarefa);
@@ -43,11 +42,16 @@ namespace e_Agenda.ModuloTarefas
                 .ToList();
         }
 
-        public List<Tarefa> SelecionarTodosOrdenadoPorPrioridade()
+        public List<Tarefa> SelecionarTodosOrdenadosPorPrioridade()
         {
             return listaRegistros
                 .OrderByDescending(x => x.prioridade)
                 .ToList();
+        }
+
+        List<Tarefa> IRepositorioTarefa.SelecionarTodos()
+        {
+            return tarefas;
         }
     }
 }

@@ -10,7 +10,6 @@ namespace e_Agenda.ModuloCompromissos
 {
     public class Compromisso : EntidadeBase<Compromisso>
     {
-        public int id;
         public string assunto;
         public string local;
         public Contato contato;
@@ -23,6 +22,15 @@ namespace e_Agenda.ModuloCompromissos
             this.assunto = assunto;
             this.local = local;
             this.contato = contato;
+            this.dataCompromisso = dataCompromisso;
+            this.horaInicio = horaInicio;
+            this.horaTermino = horaTermino;
+        }
+
+        public Compromisso(string assunto, string local, DateTime dataCompromisso, DateTime horaInicio, DateTime horaTermino)
+        {
+            this.assunto = assunto;
+            this.local = local;
             this.dataCompromisso = dataCompromisso;
             this.horaInicio = horaInicio;
             this.horaTermino = horaTermino;
@@ -41,8 +49,10 @@ namespace e_Agenda.ModuloCompromissos
 
         public override string ToString()
         {
-            return $"id: {id} Assunto: {assunto} Local: {local} Contato: {contato.nome} Data do compromisso: {dataCompromisso.Day}/{dataCompromisso.Month}/{dataCompromisso.Year} Hora de início: {horaInicio.Hour}:{horaInicio.Minute} Hora do término: {horaTermino.Hour}:{horaTermino.Minute}";
-        }
+            if (this.contato == null)
+                return $"id: {id} Assunto: {assunto} Local: {local} Data do compromisso: {dataCompromisso.Day}/{dataCompromisso.Month}/{dataCompromisso.Year} Hora de início: {horaInicio.Hour}:{horaInicio.Minute} Hora do término: {horaTermino.Hour}:{horaTermino.Minute}";
+            else
+                return $"id: {id} Assunto: {assunto} Local: {local} Contato: {contato.nome} Data do compromisso: {dataCompromisso.Day}/{dataCompromisso.Month}/{dataCompromisso.Year} Hora de início: {horaInicio.Hour}:{horaInicio.Minute} Hora do término: {horaTermino.Hour}:{horaTermino.Minute}";        }
 
         public override List<string> Validar()
         {

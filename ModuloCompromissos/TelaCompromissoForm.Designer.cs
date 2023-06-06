@@ -171,6 +171,7 @@
             // 
             boxContato.DisplayMember = "nome";
             boxContato.DropDownStyle = ComboBoxStyle.DropDownList;
+            boxContato.Enabled = false;
             boxContato.FormattingEnabled = true;
             boxContato.Location = new Point(71, 196);
             boxContato.Margin = new Padding(2);
@@ -212,7 +213,6 @@
             // chkSelecionarContato
             // 
             chkSelecionarContato.AutoSize = true;
-            chkSelecionarContato.Enabled = false;
             chkSelecionarContato.Location = new Point(17, 172);
             chkSelecionarContato.Name = "chkSelecionarContato";
             chkSelecionarContato.RightToLeft = RightToLeft.No;

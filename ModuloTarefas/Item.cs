@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace e_Agenda.ModuloTarefas
 {
+    [Serializable]
     public class Item
     {
         public string descricao;

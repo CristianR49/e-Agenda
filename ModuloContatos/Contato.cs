@@ -4,7 +4,6 @@ namespace e_Agenda.WinApp.ModuloContatos
 {
     public class Contato : EntidadeBase<Contato>
     {
-        public int id;
         public string nome { get; set; }
         public string telefone;
         public string email;

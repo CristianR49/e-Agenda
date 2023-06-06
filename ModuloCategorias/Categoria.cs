@@ -9,7 +9,6 @@ namespace e_Agenda.ModuloCategorias
     public class Categoria : EntidadeBase<Categoria>
     {
         public string titulo;
-
         public Categoria(string titulo)
         {
             this.titulo = titulo;
@@ -19,6 +18,13 @@ namespace e_Agenda.ModuloCategorias
         {
             this.id = registroAtualizado.id;
             this.titulo = registroAtualizado.titulo;
+        }
+
+        public override bool Equals(object? obj)
+        {
+            return obj is Categoria categoria &&
+                   id == categoria.id &&
+                   titulo == categoria.titulo;
         }
 
         public override string? ToString()

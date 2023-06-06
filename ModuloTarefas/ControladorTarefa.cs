@@ -1,4 +1,5 @@
 ﻿using e_Agenda.Compartilhado;
+using e_Agenda.ModuloDespesas;
 using e_Agenda.ModuloTarefas;
 using e_Agenda.ModuloTarefas;
 using static e_Agenda.ModuloTarefas.Item;
@@ -7,21 +8,35 @@ namespace e_Agenda.WinApp.ModuloTarefa
 {
     public class ControladorTarefa : ControladorBase
     {
-        private ListaTarefaControl listaTarefa;
-        public RepositorioTarefa repositorioTarefa;
+        private TabelaTarefaControl tabelaTarefa;
+        public IRepositorioTarefa repositorioTarefa;
 
-        public ControladorTarefa(RepositorioTarefa repositorioTarefa)
+        public ControladorTarefa(IRepositorioTarefa repositorioTarefa)
         {
             this.repositorioTarefa = repositorioTarefa;
         }
 
-        public override string ToolTipInserir { get { return "Inserir nova Tarefa"; } }
+        public override string ToolTipInserir => "Inserir nova Tarefa";
 
-        public override string ToolTipEditar { get { return "Editar Tarefa existente"; } }
+        public override string ToolTipEditar => "Editar Tarefa existente";
 
-        public override string ToolTipExcluir { get { return "Excluir Tarefa existente"; } }
+        public override string ToolTipExcluir => "Excluir Tarefa existente";
+
+        public override string ToolTipFiltrar => "Filtrar Tarefas";
+
+        public override string ToolTipAdicionar => "Adicionar Itens a uma Tarefa";
+
+        public override string ToolTipConcluir => "Concluir Itens de uma Tarefa";
+
+        public override bool FiltrarHabilitado => true;
+
+        public override bool AdicionarItensHabilitado => true;
+
+        public override bool ConcluirItensHabilitado => true;
 
         public override string NomeEntidade { get { return "Tarefa"; } }
+
+        public override int QntRegistros => repositorioTarefa.SelecionarTodos().Count;
 
         public override void Inserir()
         {
@@ -41,7 +56,7 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
         public override void Editar()
         {
-            Tarefa tarefa = listaTarefa.ObterTarefaSelecionada();
+            Tarefa tarefa = ObterTarefaSelecionada();
 
             if (tarefa == null)
             {
@@ -71,7 +86,7 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
         public override void Excluir()
         {
-            Tarefa tarefa = listaTarefa.ObterTarefaSelecionada();
+            Tarefa tarefa = ObterTarefaSelecionada();
 
             if (tarefa == null)
             {
@@ -118,7 +133,7 @@ namespace e_Agenda.WinApp.ModuloTarefa
                         break;
 
                     default:
-                        tarefas = repositorioTarefa.SelecionarTodosOrdenadoPorPrioridade();
+                        tarefas = repositorioTarefa.SelecionarTodosOrdenadosPorPrioridade();
                         break;
                 }
 
@@ -128,24 +143,24 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
         private void CarregarTarefas(List<Tarefa> tarefas)
         {
-            listaTarefa.AtualizarRegistros(tarefas);
+            tabelaTarefa.AtualizarRegistros(tarefas);
         }
 
         private void CarregarTarefas()
         {
-            List<Tarefa> tarefas = repositorioTarefa.SelecionarTodosOrdenadoPorPrioridade();
+            List<Tarefa> tarefas = repositorioTarefa.SelecionarTodosOrdenadosPorPrioridade();
 
-            listaTarefa.AtualizarRegistros(tarefas);
+            tabelaTarefa.AtualizarRegistros(tarefas);
         }
 
         public override UserControl ObterLista()
         {
-            if (listaTarefa == null)
-                listaTarefa = new ListaTarefaControl();
+            if (tabelaTarefa == null)
+                tabelaTarefa = new TabelaTarefaControl();
 
             CarregarTarefas();
 
-            return listaTarefa;
+            return tabelaTarefa;
         }
 
         public override string ObterTipoRegistro()
@@ -156,7 +171,7 @@ namespace e_Agenda.WinApp.ModuloTarefa
         internal void InserirItems()
         {
 
-            Tarefa tarefa = listaTarefa.ObterTarefaSelecionada();
+            Tarefa tarefa = ObterTarefaSelecionada();
 
             if (tarefa == null)
             {
@@ -189,7 +204,7 @@ namespace e_Agenda.WinApp.ModuloTarefa
 
         public void AtualizarConclusaoDosItens()
         {
-            Tarefa tarefa = listaTarefa.ObterTarefaSelecionada();
+            Tarefa tarefa = ObterTarefaSelecionada();
 
             if (tarefa == null)
             {
@@ -241,6 +256,13 @@ namespace e_Agenda.WinApp.ModuloTarefa
             {
                 tarefa.ConcluirItem(i);
             }
+        }
+
+        private Tarefa ObterTarefaSelecionada()
+        {
+            int id = tabelaTarefa.ObterIdSelecionado();
+
+            return repositorioTarefa.SelecionarPorId(id);
         }
     }
 }

@@ -49,11 +49,5 @@ namespace e_Agenda.ModuloContatos
 
             return contato;
         }
-
-        private void btnGravar_Click(object sender, EventArgs e)
-        {
-
-
-        }
     }
 }

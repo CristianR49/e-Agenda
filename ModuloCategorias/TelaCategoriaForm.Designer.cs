@@ -124,7 +124,5 @@
         private TextBox txtId;
         private TextBox txtTitulo;
         private Label label2;
-        private TextBox txtContato;
-        private TextBox txtHorarioInicio;
     }
 }

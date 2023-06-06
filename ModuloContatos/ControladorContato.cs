@@ -1,24 +1,27 @@
 ﻿using e_Agenda.Compartilhado;
+using e_Agenda.ModuloCategorias;
 using e_Agenda.ModuloContatos;
 
 namespace e_Agenda.WinApp.ModuloContatos
 {
     public class ControladorContato : ControladorBase
     {
-        private ListaContatoControl listaContato;
+        private TabelaContatoControl tabelaContato;
         private RepositorioContato repositorioContato;
         public ControladorContato(RepositorioContato repositorioContato)
         {
             this.repositorioContato = repositorioContato;
         }
 
-        public override string ToolTipInserir { get { return "Inserir novo Contato";  } }
+        public override string ToolTipInserir => "Inserir novo Contato"; 
 
-        public override string ToolTipEditar { get { return "Editar Contato existente"; } }
+        public override string ToolTipEditar => "Editar Contato existente";
 
-        public override string ToolTipExcluir { get { return "Excluir Contato existente"; } }
+        public override string ToolTipExcluir => "Excluir Contato existente";
 
-        public override string NomeEntidade { get { return "Contato"; } }
+        public override string NomeEntidade => "Contato";
+
+        public override int QntRegistros => repositorioContato.SelecionarTodos().Count;
 
         public override void Inserir()
         {
@@ -38,9 +41,9 @@ namespace e_Agenda.WinApp.ModuloContatos
 
         public override void Editar()
         {
-            Contato contato = listaContato.ObterContatoSelecionado();
+            Contato contatoSelecionado = ObterContatoSelecionado();
 
-            if (contato == null)
+            if (contatoSelecionado == null)
             {
                 MessageBox.Show($"Selecione um contato primeiro!", 
                     "Edição de Contatos",
@@ -52,7 +55,7 @@ namespace e_Agenda.WinApp.ModuloContatos
 
             TelaContatoForm telaContato = new TelaContatoForm();
 
-            telaContato.ConfigurarTela(contato);
+            telaContato.ConfigurarTela(contatoSelecionado);
 
             DialogResult opcaoEscolhida = telaContato.ShowDialog();
 
@@ -60,7 +63,7 @@ namespace e_Agenda.WinApp.ModuloContatos
             {
                 Contato contatoAtualizado = telaContato.ObterContato();
 
-                repositorioContato.Editar(contato, contatoAtualizado);
+                repositorioContato.Editar(contatoSelecionado, contatoAtualizado);
 
                 CarregarContatos();
             }
@@ -68,7 +71,7 @@ namespace e_Agenda.WinApp.ModuloContatos
 
         public override void Excluir()
         {            
-            Contato contato = listaContato.ObterContatoSelecionado();
+            Contato contato = ObterContatoSelecionado();
 
             if (contato == null)
             {
@@ -91,26 +94,33 @@ namespace e_Agenda.WinApp.ModuloContatos
             }
         }
 
-        private void CarregarContatos()
-        {
-            List<Contato> contatos = repositorioContato.SelecionarTodos();
-
-            listaContato.AtualizarRegistros(contatos);
-        }
-
         public override UserControl ObterLista()
         {
-            if (listaContato == null)
-                listaContato = new ListaContatoControl();
+            if (tabelaContato == null)
+                tabelaContato = new TabelaContatoControl();
 
             CarregarContatos();
 
-            return listaContato;
+            return tabelaContato;
         }
 
         public override string ObterTipoRegistro()
         {
             return "Cadastro de Contatos";            
+        }
+
+        private void CarregarContatos()
+        {
+            List<Contato> contatos = repositorioContato.SelecionarTodos();
+
+            tabelaContato.AtualizarRegistros(contatos);
+        }
+
+        private Contato ObterContatoSelecionado()
+        {
+            int id = tabelaContato.ObterIdSelecionado();
+
+            return repositorioContato.SelecionarPorId(id);
         }
     }
 }

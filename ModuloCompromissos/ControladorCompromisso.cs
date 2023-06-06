@@ -1,5 +1,6 @@
 ﻿using e_Agenda.Compartilhado;
 using e_Agenda.WinApp.ModuloContatos;
+using e_Agenda.WinApp.ModuloTarefa;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,20 +13,26 @@ namespace e_Agenda.ModuloCompromissos
     {
         private RepositorioContato repositorioContato;
         private RepositorioCompromisso repositorioCompromisso;
-        private ListaCompromissoControl listaCompromissoControl;
+        private TabelaCompromissoControl tabelaCompromisso;
 
         public ControladorCompromisso(RepositorioCompromisso repositorioCompromisso, RepositorioContato repositorioContato)
         {
             this.repositorioCompromisso = repositorioCompromisso;
             this.repositorioContato = repositorioContato;
         }
-        public override string ToolTipInserir { get { return "Inserir um novo Compromisso"; } }
+        public override string ToolTipInserir => "Inserir um novo Compromisso";
 
-        public override string ToolTipEditar { get { return "Editar um Compromisso existente"; } }
+        public override string ToolTipEditar => "Editar um Compromisso existente";
 
-        public override string ToolTipExcluir { get { return "Excluir um Compromisso existente"; } }
+        public override string ToolTipExcluir => "Excluir um Compromisso existente";
 
-        public override string NomeEntidade { get { return "Compromisso"; } }
+        public override bool FiltrarHabilitado => true;
+
+        public override string ToolTipFiltrar => "Filtrar Compromissos";
+
+        public override string NomeEntidade => "Compromisso";
+
+        public override int QntRegistros => repositorioCompromisso.SelecionarTodos().Count;
 
         public override void Inserir()
         {
@@ -58,7 +65,7 @@ namespace e_Agenda.ModuloCompromissos
 
             TelaCompromissoForm telaCompromisso = new TelaCompromissoForm(contatos);
 
-            Compromisso compromisso = listaCompromissoControl.ObterCompromissoSelecionado();
+            Compromisso compromisso = ObterCompromissoSelecionado();
 
             if (compromisso == null)
             {
@@ -91,7 +98,7 @@ namespace e_Agenda.ModuloCompromissos
         public override void Excluir()
         {
 
-            Compromisso compromisso = listaCompromissoControl.ObterCompromissoSelecionado();
+            Compromisso compromisso = ObterCompromissoSelecionado();
 
             if (compromisso == null)
             {
@@ -114,27 +121,14 @@ namespace e_Agenda.ModuloCompromissos
             }
         }
 
-        private void CarregarCompromissos()
-        {
-            List<Compromisso> compromissos = repositorioCompromisso.SelecionarTodos();
-
-            listaCompromissoControl.AtualizarRegistros(compromissos);
-        }
-
-        private void CarregarCompromissos(List<Compromisso> compromissos)
-        {
-            listaCompromissoControl.AtualizarRegistros(compromissos);
-        }
-
-
         public override UserControl ObterLista()
         {
-            if (listaCompromissoControl == null)
-                listaCompromissoControl = new ListaCompromissoControl();
+            if (tabelaCompromisso == null)
+                tabelaCompromisso = new TabelaCompromissoControl();
 
             CarregarCompromissos();
 
-            return listaCompromissoControl;
+            return tabelaCompromisso;
         }
 
         public override string ObterTipoRegistro()
@@ -177,6 +171,24 @@ namespace e_Agenda.ModuloCompromissos
             }
         }
 
+        private void CarregarCompromissos()
+        {
+            List<Compromisso> compromissos = repositorioCompromisso.SelecionarTodos();
+
+            tabelaCompromisso.AtualizarRegistros(compromissos);
+        }
+
+        private void CarregarCompromissos(List<Compromisso> compromissos)
+        {
+            tabelaCompromisso.AtualizarRegistros(compromissos);
+        }
+
+        private Compromisso ObterCompromissoSelecionado()
+        {
+            int id = tabelaCompromisso.ObterIdSelecionado();
+
+            return repositorioCompromisso.SelecionarPorId(id);
+        }
 
     }
 }

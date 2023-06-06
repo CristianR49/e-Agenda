@@ -1,6 +1,7 @@
 using e_Agenda.Compartilhado;
 using e_Agenda.ModuloCategorias;
 using e_Agenda.ModuloCompromissos;
+using e_Agenda.ModuloDespesas;
 using e_Agenda.ModuloTarefas;
 using e_Agenda.WinApp.ModuloContatos;
 using e_Agenda.WinApp.ModuloTarefa;
@@ -12,9 +13,9 @@ namespace e_Agenda
         private ControladorBase controlador;
         private RepositorioContato repositorioContato = new RepositorioContato();
         private RepositorioCompromisso repositorioCompromisso = new RepositorioCompromisso();
-        private RepositorioTarefa repositorioTarefa = new RepositorioTarefa();
-        private RepositorioCategoria RepositorioCategoria = new RepositorioCategoria();
-        private TelaFiltroCompromissoForm TelaFiltroCompromisso = new TelaFiltroCompromissoForm();
+        private IRepositorioTarefa repositorioTarefa = new RepositorioTarefaEmArquivo();
+        private RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
+        private RepositorioDespesa repositorioDespesa = new RepositorioDespesa();
         public static TelaPrincipalForm telaPrincipal;
 
         public static TelaPrincipalForm TelaPrincipal { get { return telaPrincipal; } }
@@ -27,11 +28,11 @@ namespace e_Agenda
             repositorioCompromisso.repositorioContato = repositorioContato;
             repositorioCompromisso.PopularRegistrosAutomaticamente();
 
-            toolStrip1.Enabled = false;
+            barraFerramentas.Enabled = false;
 
-            btnAddItems.Available = false;
+            btnAdicionar.Available = false;
 
-            btnItemsConcluidos.Available = false;
+            btnConcluir.Available = false;
 
             btnFiltrar.Available = false;
 
@@ -49,13 +50,13 @@ namespace e_Agenda
 
             ConfigurarTelaPrincipal(controlador);
 
-            toolStrip1.Enabled = true;
+            barraFerramentas.Enabled = true;
 
             btnFiltrar.Available = false;
 
             DesativarBotoesTarefa();
 
-            VisualizandoRegistros(controlador);
+            CabecalhoVisualizarQuantidadeDeRegistros(controlador);
         }
 
         private void compromissosMenuItem_Click(object sender, EventArgs e)
@@ -65,12 +66,12 @@ namespace e_Agenda
 
             ConfigurarTelaPrincipal(controlador);
 
-            toolStrip1.Enabled = true;
+            barraFerramentas.Enabled = true;
 
             btnFiltrar.Available = true;
 
             DesativarBotoesTarefa();
-            VisualizandoRegistros(controlador);
+            CabecalhoVisualizarQuantidadeDeRegistros(controlador);
         }
 
         private void tarefasMenuItem_Click(object sender, EventArgs e)
@@ -79,35 +80,54 @@ namespace e_Agenda
 
             ConfigurarTelaPrincipal(controlador);
 
-            toolStrip1.Enabled = true;
+            barraFerramentas.Enabled = true;
 
             btnFiltrar.Available = true;
 
-            btnAddItems.Available = true;
+            btnAdicionar.Available = true;
 
-            btnItemsConcluidos.Available = true;
+            btnConcluir.Available = true;
 
-            VisualizandoRegistros(controlador);
+            CabecalhoVisualizarQuantidadeDeRegistros(controlador);
         }
 
         private void categoriasMenuItem_Click(object sender, EventArgs e)
         {
-            controlador = new ControladorCategoria(RepositorioCategoria);
+            controlador = new ControladorCategoria(repositorioCategoria);
 
             ConfigurarTelaPrincipal(controlador);
 
-            toolStrip1.Enabled = true;
+            barraFerramentas.Enabled = true;
 
-            VisualizandoRegistros(controlador);
+            CabecalhoVisualizarQuantidadeDeRegistros(controlador);
+        }
+
+        private void despesasMenuItem_Click(object sender, EventArgs e)
+        {
+            controlador = new ControladorDespesa(repositorioDespesa, repositorioCategoria);
+
+            ConfigurarTelaPrincipal(controlador);
+
+            barraFerramentas.Enabled = true;
+
+            CabecalhoVisualizarQuantidadeDeRegistros(controlador);
+
         }
 
         private void ConfigurarTelaPrincipal(ControladorBase controladorBase)
         {
             LabelTipoCadastro.Text = controladorBase.ObterTipoRegistro();
 
-            ConfigurarToolTips(controlador);
+            ConfigurarBarraFerramentas(controlador);
 
             ConfigurarLista(controlador);
+        }
+
+        private void ConfigurarBarraFerramentas(ControladorBase controlador)
+        {
+            barraFerramentas.Enabled = true;
+
+            ConfigurarToolTips(controlador);
         }
 
         private void ConfigurarLista(ControladorBase controladorBase)
@@ -126,6 +146,20 @@ namespace e_Agenda
             btnInserir.ToolTipText = controladorBase.ToolTipInserir;
             btnEditar.ToolTipText = controladorBase.ToolTipEditar;
             btnExcluir.ToolTipText = controladorBase.ToolTipExcluir;
+            btnFiltrar.ToolTipText = controladorBase.ToolTipFiltrar;
+            btnAdicionar.ToolTipText = controladorBase.ToolTipAdicionar;
+            btnConcluir.ToolTipText = controladorBase.ToolTipConcluir;
+
+        }
+
+        private void ConfigurarEstados(ControladorBase controlador)
+        {
+            btnInserir.Enabled = controlador.InserirHabilitado;
+            btnEditar.Enabled = controlador.EditarHabilitado;
+            btnExcluir.Enabled = controlador.ExcluirHabilitado;
+            btnFiltrar.Enabled = controlador.FiltrarHabilitado;
+            btnAdicionar.Enabled = controlador.AdicionarItensHabilitado;
+            btnConcluir.Enabled = controlador.ConcluirItensHabilitado;
         }
 
         private void btnInserir_Click(object sender, EventArgs e)
@@ -134,7 +168,7 @@ namespace e_Agenda
 
             controlador.Inserir();
 
-            VisualizandoRegistros(controlador);
+            CabecalhoVisualizarQuantidadeDeRegistros(controlador);
         }
 
         private void btnEditar_Click(object sender, EventArgs e)
@@ -143,7 +177,7 @@ namespace e_Agenda
 
             controlador.Editar();
 
-            VisualizandoRegistros(controlador);
+            CabecalhoVisualizarQuantidadeDeRegistros(controlador);
         }
 
         private void btnExcluir_Click(object sender, EventArgs e)
@@ -152,7 +186,7 @@ namespace e_Agenda
 
             controlador.Excluir();
 
-            VisualizandoRegistros(controlador);
+            CabecalhoVisualizarQuantidadeDeRegistros(controlador);
         }
 
         private void btnFiltrar_Click(object sender, EventArgs e)
@@ -161,10 +195,10 @@ namespace e_Agenda
 
             controlador.Filtrar();
 
-            VisualizandoRegistros(controlador);
+            CabecalhoVisualizarQuantidadeDeRegistros(controlador);
         }
 
-        private void bntAddItems_Click(object sender, EventArgs e)
+        private void bntAdicionar_Click(object sender, EventArgs e)
         {
 
             ControladorTarefa controladorTarefa = (ControladorTarefa)controlador;
@@ -173,16 +207,16 @@ namespace e_Agenda
 
             controladorTarefa.InserirItems();
 
-            VisualizandoRegistros(controladorTarefa);
+            CabecalhoVisualizarQuantidadeDeRegistros(controladorTarefa);
         }
 
         private void DesativarBotoesTarefa()
         {
-            btnAddItems.Available = false;
-            btnItemsConcluidos.Available = false;
+            btnAdicionar.Available = false;
+            btnConcluir.Available = false;
         }
 
-        private void btnItemsConcluidos_Click(object sender, EventArgs e)
+        private void btnConcluir_Click(object sender, EventArgs e)
         {
             StatusLabel.Text = $"Marcando Items concluído(s)";
 
@@ -192,17 +226,20 @@ namespace e_Agenda
 
             controladorTarefa.AtualizarConclusaoDosItens();
 
-            VisualizandoRegistros(controladorTarefa);
+            CabecalhoVisualizarQuantidadeDeRegistros(controladorTarefa);
         }
 
-        private void VisualizandoRegistros(ControladorBase controlador)
+        private void CabecalhoVisualizarQuantidadeDeRegistros(ControladorBase controlador)
         {
 
-            List<EntidadeBase<Object>> registros = controlador.SelecionarRegistros();
+            int qntRegistros = controlador.QntRegistros;
 
             string nomeEntidade = controlador.NomeEntidade;
 
-            StatusLabel.Text = $"Visualizando {registros.Count} {nomeEntidade}(s)";
+            if (qntRegistros > 0)
+                StatusLabel.Text = $"Visualizando {qntRegistros} {nomeEntidade}(s)";
+            else
+                StatusLabel.Text = $"Visualizando cadastro de {nomeEntidade}";
 
         }
     }

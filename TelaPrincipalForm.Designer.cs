@@ -33,22 +33,23 @@
             contatosMenuItem = new ToolStripMenuItem();
             compromissosMenuItem = new ToolStripMenuItem();
             tarefasMenuItem = new ToolStripMenuItem();
+            despesasToolStripMenuItem = new ToolStripMenuItem();
             despesasMenuItem = new ToolStripMenuItem();
             categoriasMenuItem = new ToolStripMenuItem();
-            toolStrip1 = new ToolStrip();
+            barraFerramentas = new ToolStrip();
             btnInserir = new ToolStripButton();
             btnEditar = new ToolStripButton();
             btnExcluir = new ToolStripButton();
             btnFiltrar = new ToolStripButton();
-            btnAddItems = new ToolStripButton();
-            btnItemsConcluidos = new ToolStripButton();
+            btnAdicionar = new ToolStripButton();
+            btnConcluir = new ToolStripButton();
             toolStripSeparator1 = new ToolStripSeparator();
             LabelTipoCadastro = new ToolStripLabel();
             statusStrip1 = new StatusStrip();
             StatusLabel = new ToolStripStatusLabel();
             panelRegistros = new Panel();
             menuStrip1.SuspendLayout();
-            toolStrip1.SuspendLayout();
+            barraFerramentas.SuspendLayout();
             statusStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -65,7 +66,7 @@
             // 
             // registrosMenuItem
             // 
-            registrosMenuItem.DropDownItems.AddRange(new ToolStripItem[] { contatosMenuItem, compromissosMenuItem, tarefasMenuItem, despesasMenuItem, categoriasMenuItem });
+            registrosMenuItem.DropDownItems.AddRange(new ToolStripItem[] { contatosMenuItem, compromissosMenuItem, tarefasMenuItem, despesasToolStripMenuItem });
             registrosMenuItem.Name = "registrosMenuItem";
             registrosMenuItem.Size = new Size(67, 22);
             registrosMenuItem.Text = "Registros";
@@ -73,47 +74,56 @@
             // contatosMenuItem
             // 
             contatosMenuItem.Name = "contatosMenuItem";
-            contatosMenuItem.Size = new Size(180, 22);
+            contatosMenuItem.Size = new Size(154, 22);
             contatosMenuItem.Text = "Contatos";
             contatosMenuItem.Click += contatosMenuItem_Click;
             // 
             // compromissosMenuItem
             // 
             compromissosMenuItem.Name = "compromissosMenuItem";
-            compromissosMenuItem.Size = new Size(180, 22);
+            compromissosMenuItem.Size = new Size(154, 22);
             compromissosMenuItem.Text = "Compromissos";
             compromissosMenuItem.Click += compromissosMenuItem_Click;
             // 
             // tarefasMenuItem
             // 
             tarefasMenuItem.Name = "tarefasMenuItem";
-            tarefasMenuItem.Size = new Size(180, 22);
+            tarefasMenuItem.Size = new Size(154, 22);
             tarefasMenuItem.Text = "Tarefas";
             tarefasMenuItem.Click += tarefasMenuItem_Click;
+            // 
+            // despesasToolStripMenuItem
+            // 
+            despesasToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { despesasMenuItem, categoriasMenuItem });
+            despesasToolStripMenuItem.Name = "despesasToolStripMenuItem";
+            despesasToolStripMenuItem.Size = new Size(154, 22);
+            despesasToolStripMenuItem.Text = "Despesas";
             // 
             // despesasMenuItem
             // 
             despesasMenuItem.Name = "despesasMenuItem";
-            despesasMenuItem.Size = new Size(180, 22);
+            despesasMenuItem.Size = new Size(130, 22);
             despesasMenuItem.Text = "Despesas";
+            despesasMenuItem.Click += despesasMenuItem_Click;
             // 
             // categoriasMenuItem
             // 
             categoriasMenuItem.Name = "categoriasMenuItem";
-            categoriasMenuItem.Size = new Size(180, 22);
+            categoriasMenuItem.Size = new Size(130, 22);
             categoriasMenuItem.Text = "Categorias";
-            categoriasMenuItem.Click += categoriasToolStripMenuItem_Click;
+            categoriasMenuItem.Click += categoriasMenuItem_Click;
             // 
-            // toolStrip1
+            // barraFerramentas
             // 
-            toolStrip1.ImageScalingSize = new Size(24, 24);
-            toolStrip1.Items.AddRange(new ToolStripItem[] { btnInserir, btnEditar, btnExcluir, btnFiltrar, btnAddItems, btnItemsConcluidos, toolStripSeparator1, LabelTipoCadastro });
-            toolStrip1.Location = new Point(0, 24);
-            toolStrip1.Name = "toolStrip1";
-            toolStrip1.Padding = new Padding(0, 0, 2, 0);
-            toolStrip1.Size = new Size(560, 45);
-            toolStrip1.TabIndex = 1;
-            toolStrip1.Text = "toolStrip1";
+            barraFerramentas.Enabled = false;
+            barraFerramentas.ImageScalingSize = new Size(24, 24);
+            barraFerramentas.Items.AddRange(new ToolStripItem[] { btnInserir, btnEditar, btnExcluir, btnFiltrar, btnAdicionar, btnConcluir, toolStripSeparator1, LabelTipoCadastro });
+            barraFerramentas.Location = new Point(0, 24);
+            barraFerramentas.Name = "barraFerramentas";
+            barraFerramentas.Padding = new Padding(0, 0, 2, 0);
+            barraFerramentas.Size = new Size(560, 45);
+            barraFerramentas.TabIndex = 1;
+            barraFerramentas.Text = "toolStrip1";
             // 
             // btnInserir
             // 
@@ -124,7 +134,6 @@
             btnInserir.Name = "btnInserir";
             btnInserir.Padding = new Padding(7);
             btnInserir.Size = new Size(42, 42);
-            btnInserir.Text = "Inserir";
             btnInserir.Click += btnInserir_Click;
             // 
             // btnEditar
@@ -136,7 +145,6 @@
             btnEditar.Name = "btnEditar";
             btnEditar.Padding = new Padding(7);
             btnEditar.Size = new Size(42, 42);
-            btnEditar.Text = "Editar";
             btnEditar.ToolTipText = "Editar";
             btnEditar.Click += btnEditar_Click;
             // 
@@ -149,7 +157,6 @@
             btnExcluir.Name = "btnExcluir";
             btnExcluir.Padding = new Padding(7);
             btnExcluir.Size = new Size(42, 42);
-            btnExcluir.Text = "Excluir";
             btnExcluir.Click += btnExcluir_Click;
             // 
             // btnFiltrar
@@ -160,30 +167,27 @@
             btnFiltrar.Name = "btnFiltrar";
             btnFiltrar.Padding = new Padding(7);
             btnFiltrar.Size = new Size(42, 42);
-            btnFiltrar.Text = "Filtrar visualização de Registros";
             btnFiltrar.Click += btnFiltrar_Click;
             // 
-            // btnAddItems
+            // btnAdicionar
             // 
-            btnAddItems.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnAddItems.Image = Properties.Resources.format_list_bulleted_FILL0_wght400_GRAD0_opsz24;
-            btnAddItems.ImageTransparentColor = Color.Magenta;
-            btnAddItems.Name = "btnAddItems";
-            btnAddItems.Padding = new Padding(7);
-            btnAddItems.Size = new Size(42, 42);
-            btnAddItems.Text = "Adicionar Items a uma Tarefa";
-            btnAddItems.Click += bntAddItems_Click;
+            btnAdicionar.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnAdicionar.Image = Properties.Resources.format_list_bulleted_FILL0_wght400_GRAD0_opsz24;
+            btnAdicionar.ImageTransparentColor = Color.Magenta;
+            btnAdicionar.Name = "btnAdicionar";
+            btnAdicionar.Padding = new Padding(7);
+            btnAdicionar.Size = new Size(42, 42);
+            btnAdicionar.Click += bntAdicionar_Click;
             // 
-            // btnItemsConcluidos
+            // btnConcluir
             // 
-            btnItemsConcluidos.DisplayStyle = ToolStripItemDisplayStyle.Image;
-            btnItemsConcluidos.Image = Properties.Resources.checklist_FILL0_wght400_GRAD0_opsz24;
-            btnItemsConcluidos.ImageTransparentColor = Color.Magenta;
-            btnItemsConcluidos.Name = "btnItemsConcluidos";
-            btnItemsConcluidos.Padding = new Padding(7);
-            btnItemsConcluidos.Size = new Size(42, 42);
-            btnItemsConcluidos.Text = "Marcar Items concluidos";
-            btnItemsConcluidos.Click += btnItemsConcluidos_Click;
+            btnConcluir.DisplayStyle = ToolStripItemDisplayStyle.Image;
+            btnConcluir.Image = Properties.Resources.checklist_FILL0_wght400_GRAD0_opsz24;
+            btnConcluir.ImageTransparentColor = Color.Magenta;
+            btnConcluir.Name = "btnConcluir";
+            btnConcluir.Padding = new Padding(7);
+            btnConcluir.Size = new Size(42, 42);
+            btnConcluir.Click += btnConcluir_Click;
             // 
             // toolStripSeparator1
             // 
@@ -230,7 +234,7 @@
             ClientSize = new Size(560, 270);
             Controls.Add(panelRegistros);
             Controls.Add(statusStrip1);
-            Controls.Add(toolStrip1);
+            Controls.Add(barraFerramentas);
             Controls.Add(menuStrip1);
             MainMenuStrip = menuStrip1;
             Margin = new Padding(2);
@@ -240,8 +244,8 @@
             Text = "e-Agenda 2.0";
             menuStrip1.ResumeLayout(false);
             menuStrip1.PerformLayout();
-            toolStrip1.ResumeLayout(false);
-            toolStrip1.PerformLayout();
+            barraFerramentas.ResumeLayout(false);
+            barraFerramentas.PerformLayout();
             statusStrip1.ResumeLayout(false);
             statusStrip1.PerformLayout();
             ResumeLayout(false);
@@ -251,7 +255,7 @@
         #endregion
 
         private MenuStrip menuStrip1;
-        private ToolStrip toolStrip1;
+        private ToolStrip barraFerramentas;
         private StatusStrip statusStrip1;
         private ToolStripMenuItem registrosMenuItem;
         private ToolStripMenuItem contatosMenuItem;
@@ -264,9 +268,10 @@
         private ToolStripSeparator toolStripSeparator1;
         private ToolStripLabel LabelTipoCadastro;
         private ToolStripMenuItem tarefasMenuItem;
-        private ToolStripButton btnAddItems;
-        private ToolStripButton btnItemsConcluidos;
+        private ToolStripButton btnAdicionar;
+        private ToolStripButton btnConcluir;
         private ToolStripButton btnFiltrar;
+        private ToolStripMenuItem despesasToolStripMenuItem;
         private ToolStripMenuItem despesasMenuItem;
         private ToolStripMenuItem categoriasMenuItem;
     }

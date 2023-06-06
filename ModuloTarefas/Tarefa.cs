@@ -3,7 +3,8 @@ using e_Agenda.ModuloTarefas;
 
 namespace e_Agenda.WinApp.ModuloTarefa
 {
-    public class Tarefa : EntidadeBase<Tarefa> //Model, Entidade
+    [Serializable]
+    public class Tarefa : EntidadeBase<Tarefa>
     {
         public string titulo;
         public PrioridadeTarefaEnum prioridade;
@@ -18,8 +19,6 @@ namespace e_Agenda.WinApp.ModuloTarefa
             this.titulo = titulo;
             this.prioridade = prioridade;
             this.dataCriacao = dataCriacao;
-            this.items = new List<Item>();
-            this.percentualConcluido = 0;
         }
 
         public override void AtualizarInformacoes(Tarefa registroAtualizado)

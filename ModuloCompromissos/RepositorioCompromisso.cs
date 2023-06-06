@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace e_Agenda.ModuloCompromissos
 {
     
-    public class RepositorioCompromisso : RepositorioBase<Compromisso>
+    public class RepositorioCompromisso : RepositorioEmMemoriaBase<Compromisso>
     {
         public RepositorioContato repositorioContato;
         List<Compromisso> compromissos = new List<Compromisso>();
