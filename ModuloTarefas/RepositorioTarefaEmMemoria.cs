@@ -1,10 +1,5 @@
 ﻿using e_Agenda.Compartilhado;
-using e_Agenda.WinApp.ModuloTarefa;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using e_Agenda.ModuloTarefas;
 
 namespace e_Agenda.ModuloTarefas
 {

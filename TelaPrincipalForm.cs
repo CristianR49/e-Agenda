@@ -1,21 +1,24 @@
 using e_Agenda.Compartilhado;
 using e_Agenda.ModuloCategorias;
 using e_Agenda.ModuloCompromissos;
+using e_Agenda.ModuloContatos;
 using e_Agenda.ModuloDespesas;
 using e_Agenda.ModuloTarefas;
-using e_Agenda.WinApp.ModuloContatos;
-using e_Agenda.WinApp.ModuloTarefa;
 
 namespace e_Agenda
 {
     public partial class TelaPrincipalForm : Form
     {
+
+        static ContextoDados contextoDados = new ContextoDados(carregarDados: true);
+
         private ControladorBase controlador;
-        private RepositorioContato repositorioContato = new RepositorioContato();
-        private RepositorioCompromisso repositorioCompromisso = new RepositorioCompromisso();
-        private IRepositorioTarefa repositorioTarefa = new RepositorioTarefaEmArquivo();
-        private RepositorioCategoria repositorioCategoria = new RepositorioCategoria();
-        private RepositorioDespesa repositorioDespesa = new RepositorioDespesa();
+
+        private IRepositorioContato repositorioContato = new RepositorioContatoEmArquivo(contextoDados);
+        private IRepositorioCompromisso repositorioCompromisso = new RepositorioCompromissoEmArquivo(contextoDados);
+        private IRepositorioTarefa repositorioTarefa = new RepositorioTarefaEmArquivo(contextoDados);
+        private IRepositorioCategoria repositorioCategoria = new RepositorioCategoriaEmArquivo(contextoDados);
+        private IRepositorioDespesa repositorioDespesa = new RepositorioDespesaEmArquivo(contextoDados);
         public static TelaPrincipalForm telaPrincipal;
 
         public static TelaPrincipalForm TelaPrincipal { get { return telaPrincipal; } }
@@ -23,11 +26,7 @@ namespace e_Agenda
         public TelaPrincipalForm()
         {
             InitializeComponent();
-
-            repositorioContato.PopularRegistrosAutomaticamente();
-            repositorioCompromisso.repositorioContato = repositorioContato;
-            repositorioCompromisso.PopularRegistrosAutomaticamente();
-
+   
             barraFerramentas.Enabled = false;
 
             btnAdicionar.Available = false;

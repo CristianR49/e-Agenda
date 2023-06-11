@@ -9,26 +9,38 @@ namespace e_Agenda.Compartilhado
 {
     public abstract class RepositorioEmArquivoBase<T> where T : EntidadeBase<T>
     {
-        private List<T> registros = new List<T>();
+        protected List<T> registros = new List<T>();
+
+        protected ContextoDados contextoDados;
 
         private int contador;
 
-        protected abstract string ObterNomeArquivo();
+        public RepositorioEmArquivoBase(ContextoDados contexto)
+        {
+
+            contextoDados = contexto;
+
+            AtualizarContador();
+
+        }
+
+        protected abstract List<T> ObterRegistros();
 
         public void Inserir(T novoRegistro)
         {
+            List<T> registros = ObterRegistros();
             contador++;
             novoRegistro.id = contador;
             registros.Add(novoRegistro);
 
-            GravarEmArquivoJson();
+            contextoDados.GravarEmArquivoJson();
         }
 
         public void Editar(T registroSelecionado, T registroAtualizado)
         {
             registroSelecionado.AtualizarInformacoes(registroAtualizado);
 
-            GravarEmArquivoJson();
+            contextoDados.GravarEmArquivoJson();
         }
 
         public void Editar(int id, T registroAtualizada)
@@ -37,59 +49,34 @@ namespace e_Agenda.Compartilhado
 
             registroSelecionado.AtualizarInformacoes(registroAtualizada);
 
-            GravarEmArquivoJson();
+            contextoDados.GravarEmArquivoJson();
         }
 
         public void Excluir(T registroSelecionado)
         {
+            List<T> registros = ObterRegistros();
+
             registros.Remove(registroSelecionado);
 
-            GravarEmArquivoJson();
+            contextoDados.GravarEmArquivoJson();
         }
 
         public T SelecionarPorId(int id)
         {
-            T registro = registros.FirstOrDefault(x => x.id == id);
+            List<T> registros = ObterRegistros();
 
-            return registro;
+            return registros.FirstOrDefault(x => x.id == id);           
         }
 
         public List<T> SelecionarTodos()
         {
-            return registros;
-        }
-
-        private void GravarEmArquivoJson()
-        {
-            JsonSerializerOptions opcoes = new JsonSerializerOptions();
-            opcoes.IncludeFields = true;
-            opcoes.WriteIndented = true;
-
-            string registrosJson = JsonSerializer.Serialize(registros, opcoes);
-
-            File.WriteAllText(NOME_ARQUIVO_REGISTRO, registrosJson);
-        }
-
-        private void CarregarTarefasDoArquivoJson()
-        {
-            JsonSerializerOptions opcoes = new JsonSerializerOptions();
-            opcoes.IncludeFields = true;
-
-            string registrosJson = File.ReadAllText(NOME_ARQUIVO_REGISTRO);
-
-            if (registrosJson.Length > 0)
-                registros = JsonSerializer.Deserialize<List<T>>(registrosJson, opcoes);
-            AtualizarContador();
-
+            return ObterRegistros();
         }
 
         private void AtualizarContador()
         {
-            try
-            {
-                contador = registros.Max(x => x.id);
-            }
-            catch { }
+            if (ObterRegistros().Count > 0)
+                contador = ObterRegistros().Max(x => x.id);
         }
     }
 }

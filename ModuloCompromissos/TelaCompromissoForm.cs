@@ -1,15 +1,4 @@
-﻿using e_Agenda.Compartilhado;
-using e_Agenda.WinApp.ModuloContatos;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using e_Agenda.ModuloContatos;
 
 namespace e_Agenda.ModuloCompromissos
 {
@@ -82,7 +71,7 @@ namespace e_Agenda.ModuloCompromissos
         {
             Compromisso compromisso = ObterCompromisso();
 
-            List<string> erros = compromisso.Validar();
+            List<string> erros = compromisso.Validar(chkSelecionarContato.Checked);
 
             if (erros.Count > 0)
             {

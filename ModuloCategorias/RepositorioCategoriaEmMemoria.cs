@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace e_Agenda.ModuloCategorias
 {
-    public class RepositorioCategoria : RepositorioEmMemoriaBase<Categoria>
+    public class RepositorioCategoriaEmMemoria : RepositorioEmMemoriaBase<Categoria>
     {
         public List<Categoria> categorias = new List<Categoria>();
 
-        public RepositorioCategoria()
+        public RepositorioCategoriaEmMemoria()
         {
             this.listaRegistros = categorias;
         }

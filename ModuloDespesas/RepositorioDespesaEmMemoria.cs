@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace e_Agenda.ModuloDespesas
 {
-    public class RepositorioDespesa : RepositorioEmMemoriaBase<Despesa>
+    public class RepositorioDespesaEmMemoria : RepositorioEmMemoriaBase<Despesa>
     {
         List<Despesa> despesas = new List<Despesa>();
 
-        public RepositorioDespesa()
+        public RepositorioDespesaEmMemoria()
         {
             listaRegistros = despesas;
         }

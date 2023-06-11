@@ -10,7 +10,7 @@ namespace e_Agenda.ModuloCategorias
 {
     internal class ControladorCategoria : ControladorBase
     {
-        RepositorioCategoria repositorioCategoria;
+        IRepositorioCategoria repositorioCategoria;
         TabelaCategoriaControl tabelaCategoria;
         public override string ToolTipInserir => "Inserir uma nova Categoria";
 
@@ -22,7 +22,7 @@ namespace e_Agenda.ModuloCategorias
 
         public override int QntRegistros => repositorioCategoria.SelecionarTodos().Count;
 
-        public ControladorCategoria(RepositorioCategoria repositorioCategoria)
+        public ControladorCategoria(IRepositorioCategoria repositorioCategoria)
         {
             this.repositorioCategoria = repositorioCategoria;
         }

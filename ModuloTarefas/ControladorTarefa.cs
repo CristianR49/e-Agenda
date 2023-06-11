@@ -2,9 +2,8 @@
 using e_Agenda.ModuloDespesas;
 using e_Agenda.ModuloTarefas;
 using e_Agenda.ModuloTarefas;
-using static e_Agenda.ModuloTarefas.Item;
 
-namespace e_Agenda.WinApp.ModuloTarefa
+namespace e_Agenda.ModuloTarefas
 {
     public class ControladorTarefa : ControladorBase
     {

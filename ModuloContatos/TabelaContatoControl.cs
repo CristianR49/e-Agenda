@@ -1,6 +1,4 @@
-﻿using e_Agenda.WinApp.ModuloContatos;
-
-namespace e_Agenda.ModuloContatos
+﻿namespace e_Agenda.ModuloContatos
 {
     public partial class TabelaContatoControl : UserControl
     {

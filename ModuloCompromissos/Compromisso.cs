@@ -1,5 +1,5 @@
 ﻿using e_Agenda.Compartilhado;
-using e_Agenda.WinApp.ModuloContatos;
+using e_Agenda.ModuloContatos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -54,7 +54,7 @@ namespace e_Agenda.ModuloCompromissos
             else
                 return $"id: {id} Assunto: {assunto} Local: {local} Contato: {contato.nome} Data do compromisso: {dataCompromisso.Day}/{dataCompromisso.Month}/{dataCompromisso.Year} Hora de início: {horaInicio.Hour}:{horaInicio.Minute} Hora do término: {horaTermino.Hour}:{horaTermino.Minute}";        }
 
-        public override List<string> Validar()
+        public override List<string> Validar(bool vaiTerContato)
         {
             List<string> erros = new List<string>();
 
@@ -66,9 +66,9 @@ namespace e_Agenda.ModuloCompromissos
             {
                 erros.Add("O campo \"local\" é obrigatório");
             }
-            if (contato == null)
+            if (contato == null && vaiTerContato)
             {
-                erros.Add("O campo \"contato\" é obrigatório");
+                erros.Add("Escolha um contato");
             }
             if (dataCompromisso == null)
             {

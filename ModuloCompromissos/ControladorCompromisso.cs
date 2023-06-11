@@ -1,21 +1,17 @@
 ﻿using e_Agenda.Compartilhado;
-using e_Agenda.WinApp.ModuloContatos;
-using e_Agenda.WinApp.ModuloTarefa;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using e_Agenda.ModuloContatos;
+using e_Agenda.ModuloContatos;
+using e_Agenda.ModuloTarefas;
 
 namespace e_Agenda.ModuloCompromissos
 {
     public class ControladorCompromisso : ControladorBase
     {
-        private RepositorioContato repositorioContato;
-        private RepositorioCompromisso repositorioCompromisso;
+        private IRepositorioContato repositorioContato;
+        private IRepositorioCompromisso repositorioCompromisso;
         private TabelaCompromissoControl tabelaCompromisso;
 
-        public ControladorCompromisso(RepositorioCompromisso repositorioCompromisso, RepositorioContato repositorioContato)
+        public ControladorCompromisso(IRepositorioCompromisso repositorioCompromisso, IRepositorioContato repositorioContato)
         {
             this.repositorioCompromisso = repositorioCompromisso;
             this.repositorioContato = repositorioContato;

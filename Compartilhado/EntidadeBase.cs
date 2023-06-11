@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace e_Agenda.Compartilhado
+﻿namespace e_Agenda.Compartilhado
 {
     [Serializable]
     public abstract class EntidadeBase<TEntidade>
@@ -13,6 +7,10 @@ namespace e_Agenda.Compartilhado
 
         public abstract void AtualizarInformacoes(TEntidade registroAtualizado);
 
-        public abstract List<string> Validar();
+        public virtual List<string> Validar()
+        { return null; }
+
+        public virtual List<string> Validar(bool vaiTerContato)
+        { return null; }
     }
 }

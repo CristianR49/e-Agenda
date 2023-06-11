@@ -1,7 +1,6 @@
 ﻿using e_Agenda.Compartilhado;
-using e_Agenda.ModuloTarefas;
 
-namespace e_Agenda.WinApp.ModuloTarefa
+namespace e_Agenda.ModuloTarefas
 {
     [Serializable]
     public class Tarefa : EntidadeBase<Tarefa>

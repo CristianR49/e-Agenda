@@ -2,13 +2,13 @@
 using e_Agenda.ModuloCategorias;
 using e_Agenda.ModuloContatos;
 
-namespace e_Agenda.WinApp.ModuloContatos
+namespace e_Agenda.ModuloContatos
 {
     public class ControladorContato : ControladorBase
     {
         private TabelaContatoControl tabelaContato;
-        private RepositorioContato repositorioContato;
-        public ControladorContato(RepositorioContato repositorioContato)
+        private IRepositorioContato repositorioContato;
+        public ControladorContato(IRepositorioContato repositorioContato)
         {
             this.repositorioContato = repositorioContato;
         }

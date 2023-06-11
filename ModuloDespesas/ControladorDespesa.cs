@@ -1,16 +1,15 @@
 ﻿using e_Agenda.ModuloCategorias;
 using e_Agenda.ModuloTarefas;
-using e_Agenda.WinApp.ModuloContatos;
 
 namespace e_Agenda.ModuloDespesas
 {
     internal class ControladorDespesa : ControladorBase
     {
         TabelaDespesaControl tabelaDespesa;
-        RepositorioDespesa repositorioDespesa;
-        RepositorioCategoria repositorioCategoria;
+        IRepositorioDespesa repositorioDespesa;
+        IRepositorioCategoria repositorioCategoria;
 
-        public ControladorDespesa(RepositorioDespesa repositorioDespesa, RepositorioCategoria repositorioCategoria)
+        public ControladorDespesa(IRepositorioDespesa repositorioDespesa, IRepositorioCategoria repositorioCategoria)
         {
             this.repositorioDespesa = repositorioDespesa;
             this.repositorioCategoria = repositorioCategoria;
@@ -28,7 +27,7 @@ namespace e_Agenda.ModuloDespesas
 
         public override void Inserir()
         {
-            List<Categoria> categorias = repositorioCategoria.categorias;
+            List<Categoria> categorias = repositorioCategoria.SelecionarTodos();
 
             TelaDespesaForm telaDespesa = new TelaDespesaForm(categorias);
 
@@ -60,7 +59,7 @@ namespace e_Agenda.ModuloDespesas
                 return;
             }
 
-            List<Categoria> categorias = repositorioCategoria.categorias;
+            List<Categoria> categorias = repositorioCategoria.SelecionarTodos();
 
             AtualizarCategorias(despesaSelecionada, categorias);
 

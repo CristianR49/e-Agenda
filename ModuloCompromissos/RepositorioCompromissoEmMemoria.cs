@@ -1,4 +1,4 @@
-﻿using e_Agenda.WinApp.ModuloContatos;
+﻿using e_Agenda.ModuloContatos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 namespace e_Agenda.ModuloCompromissos
 {
     
-    public class RepositorioCompromisso : RepositorioEmMemoriaBase<Compromisso>
+    public class RepositorioCompromissoEmMemoria : RepositorioEmMemoriaBase<Compromisso>
     {
-        public RepositorioContato repositorioContato;
+        public RepositorioContatoEmMemoria repositorioContato;
         List<Compromisso> compromissos = new List<Compromisso>();
 
-        public RepositorioCompromisso()
+        public RepositorioCompromissoEmMemoria()
         {
             this.listaRegistros = this.compromissos;
         }

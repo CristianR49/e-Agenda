@@ -1,6 +1,6 @@
 ﻿using e_Agenda.Compartilhado;
 
-namespace e_Agenda.WinApp.ModuloContatos
+namespace e_Agenda.ModuloContatos
 {
     public class Contato : EntidadeBase<Contato>
     {

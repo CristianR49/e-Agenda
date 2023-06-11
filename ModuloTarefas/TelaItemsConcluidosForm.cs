@@ -1,15 +1,5 @@
 ﻿using e_Agenda.Compartilhado;
-using e_Agenda.WinApp.ModuloTarefa;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using e_Agenda.ModuloTarefas;
 
 namespace e_Agenda.ModuloTarefas
 {
@@ -17,7 +7,7 @@ namespace e_Agenda.ModuloTarefas
     {
         private Tarefa tarefaVerificada;
 
-        public Tarefa TarefaVerificada { get { return tarefaVerificada; } set { tarefaVerificada = value; /*duvida .. propriedade capsula deveria ter set para a vari encapsulada?*/ } }
+        public Tarefa TarefaVerificada { get { return tarefaVerificada; } set { tarefaVerificada = value; } }
 
         public TelaItemsConcluidosForm()
         {
