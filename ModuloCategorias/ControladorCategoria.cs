@@ -1,10 +1,6 @@
-﻿using e_Agenda.Compartilhado;
-using e_Agenda.ModuloCompromissos;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using e_Agenda.Dominio.Compartilhado;
+using e_Agenda.Dominio.ModuloCompromissos;
+using e_Agenda.Dominio.ModuloCategorias;
 
 namespace e_Agenda.ModuloCategorias
 {

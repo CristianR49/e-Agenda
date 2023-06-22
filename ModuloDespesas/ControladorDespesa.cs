@@ -1,5 +1,5 @@
-﻿using e_Agenda.ModuloCategorias;
-using e_Agenda.ModuloTarefas;
+﻿using e_Agenda.Dominio.ModuloCategorias;
+using e_Agenda.Dominio.ModuloDespesas;
 
 namespace e_Agenda.ModuloDespesas
 {

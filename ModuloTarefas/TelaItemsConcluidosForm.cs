@@ -1,5 +1,4 @@
-﻿using e_Agenda.Compartilhado;
-using e_Agenda.ModuloTarefas;
+﻿using e_Agenda.Dominio.ModuloTarefas;
 
 namespace e_Agenda.ModuloTarefas
 {
@@ -38,7 +37,7 @@ namespace e_Agenda.ModuloTarefas
             return listaItens.CheckedItems.Cast<Item>().ToList();
         }
 
-        internal List<Item> ObterItensDesmarcados()
+        public List<Item> ObterItensDesmarcados()
         {
             return listaItens.Items.Cast<Item>().Except(ObterItensMarcados()).ToList();
         }

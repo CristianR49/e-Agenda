@@ -1,6 +1,5 @@
-﻿using e_Agenda.Compartilhado;
-using e_Agenda.ModuloCategorias;
-using e_Agenda.ModuloContatos;
+﻿using e_Agenda.Dominio.ModuloCategorias;
+using e_Agenda.Dominio.ModuloContatos;
 
 namespace e_Agenda.ModuloContatos
 {

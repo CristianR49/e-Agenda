@@ -1,4 +1,4 @@
-﻿using e_Agenda.ModuloTarefas;
+﻿using e_Agenda.Dominio.ModuloTarefas;
 
 namespace e_Agenda.ModuloTarefas
 {

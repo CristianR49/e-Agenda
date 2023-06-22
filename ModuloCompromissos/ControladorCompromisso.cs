@@ -1,7 +1,6 @@
-﻿using e_Agenda.Compartilhado;
-using e_Agenda.ModuloContatos;
-using e_Agenda.ModuloContatos;
-using e_Agenda.ModuloTarefas;
+﻿using e_Agenda.Dominio.ModuloContatos;
+using e_Agenda.Dominio.ModuloCompromissos;
+using e_Agenda.Dominio.ModuloTarefas;
 
 namespace e_Agenda.ModuloCompromissos
 {

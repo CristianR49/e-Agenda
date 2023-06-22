@@ -1,7 +1,4 @@
-﻿using e_Agenda.Compartilhado;
-using e_Agenda.ModuloDespesas;
-using e_Agenda.ModuloTarefas;
-using e_Agenda.ModuloTarefas;
+﻿using e_Agenda.Dominio.ModuloTarefas;
 
 namespace e_Agenda.ModuloTarefas
 {

@@ -1,4 +1,6 @@
-﻿namespace e_Agenda.ModuloContatos
+﻿using e_Agenda.Dominio.ModuloContatos;
+
+namespace e_Agenda.ModuloContatos
 {
     public partial class TabelaContatoControl : UserControl
     {

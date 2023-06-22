@@ -1,4 +1,5 @@
-﻿using e_Agenda.ModuloContatos;
+﻿using e_Agenda.Dominio.ModuloContatos;
+using e_Agenda.Dominio.ModuloCompromissos;
 
 namespace e_Agenda.ModuloCompromissos
 {

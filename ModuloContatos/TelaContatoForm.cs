@@ -1,4 +1,4 @@
-﻿using e_Agenda.Compartilhado;
+﻿using e_Agenda.Dominio.ModuloContatos;
 
 namespace e_Agenda.ModuloContatos
 {
